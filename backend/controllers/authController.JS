@@ -115,4 +115,5 @@ module.exports = {
     signup,
     login,
     me,
+    logout,
 };
