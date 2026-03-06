@@ -43,6 +43,36 @@ async function signup(req, res, next) {
     }
 }
 
+async function login(req, res, next) {
+    try {
+        const { username, password } = req.body;
+        if (!username || !password) {
+            return res.status(400).json({ message: 'Username and password are required' });
+        }
+        const user = await prisma.user.findUnique({
+            where: { username },
+        });
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid username or password' });
+        }
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ message: 'Invalid username or password' });
+        }
+        req.session.userId = user.id;
+        res.json(
+            {
+                id: user.id,
+                username: user.username,
+                name: user.name,
+            }
+        );
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     signup,
+    login,
 };
