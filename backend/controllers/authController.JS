@@ -72,7 +72,47 @@ async function login(req, res, next) {
     }
 }
 
+async function me(req, res, next) {
+    try {
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+        });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json(
+            {
+                id: user.id,
+                username: user.username,
+                name: user.name,
+            }
+        );
+    }
+    catch (error) {
+        next(error);
+    }
+}
+async function logout(req, res, next) {
+    try {
+        req.session.destroy((err) => {
+            if (err) {
+                return next(err);
+            }
+            res.clearCookie('sid');
+            res.json({ message: 'Logged out successfully' });
+        }
+        );
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     signup,
     login,
+    me,
 };
