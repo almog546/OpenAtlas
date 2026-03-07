@@ -5,7 +5,7 @@ import * as yup from "yup"
 import { useNavigate } from 'react-router-dom';
 
 
-export default function Signup() {
+export default function Signup( { user }) {
     const [username, setUsername] = useState('');
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
@@ -42,7 +42,9 @@ export default function Signup() {
         }
     }
 
-    return (
+    return (<>
+            {!user ? (
+
         <div className={styles.container}>
             <h1>Sign Up</h1>
             {error && <p className={styles.error}>{error}</p>}
@@ -74,5 +76,8 @@ export default function Signup() {
                 <button type="submit" className={styles.button}>Sign Up</button>
             </form>
         </div>
-    );
+        ) : (
+            navigate('/home')
+        )}
+   </> );
 }

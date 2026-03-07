@@ -3,12 +3,14 @@ import { useState } from 'react';
 import api from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 
-export default function Login() {
+
+export default function Login( { user }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
     const navigate = useNavigate();
+    
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -23,9 +25,12 @@ export default function Login() {
             setSuccess(false);
         }
     }
-
+  
     return (
-        <div className={styles.container}>
+        <>
+        {!user ? (
+           
+        <div className={styles.container} >
             <h1>Login</h1>
             {error && <p className={styles.error}>{error}</p>}
             {success && <p className={styles.success}>Login successful!</p>}
@@ -47,6 +52,11 @@ export default function Login() {
                 <button type="submit" className={styles.button}>Login</button>
             </form>
         </div>
-    );
+        ) : (
+            navigate('/home')
+        )}
+        
+
+   </> );
 }
     
