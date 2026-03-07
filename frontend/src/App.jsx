@@ -8,6 +8,7 @@ import api from './api/axios';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
+import PostPage from './postPage/postPage';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -46,6 +47,7 @@ function App() {
         <Route path="/signup" element={<Signup user={user} />} />
         <Route path="/login" element={<Login user={user} />} />
         <Route path="/home" element={<Home user={user} />} />
+        <Route path="/posts/:id" element={<PostPage />} />
       </Routes>
       
     </>
