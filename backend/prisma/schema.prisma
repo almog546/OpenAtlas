@@ -21,6 +21,7 @@ model User {
   createdAt DateTime      @default(now())
   posts     Post[]
   comments  Comment[]
+  drafts     Draft[]
 }
 model Post {
   id        String   @id @default(cuid())
@@ -29,8 +30,10 @@ model Post {
   content   String
   published Boolean  @default(true)
   views     Int      @default(0)
-  category  Category
+  category  Category?
   picture   String?
+  
+ 
 
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])
@@ -47,6 +50,19 @@ model Comment {
   postId    String
   post      Post     @relation(fields: [postId], references: [id])
   createdAt DateTime @default(now())
+}
+model Draft {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  category  Category?
+  picture   String?
+
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 enum Category {
   technology

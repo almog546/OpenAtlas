@@ -45,3 +45,19 @@
 .logoutButton:hover {
     color: var(--danger);
 }
+.newpost {
+    padding: 0.45rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+    border: 1px solid var(--border);
+    background-color: var(--bg-main);
+    color: var(--text-muted);
+    text-decoration: none;
+}
+.newpost:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-main);
+}

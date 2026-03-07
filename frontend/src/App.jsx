@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
 import PostPage from './postPage/postPage';
+import NewPost from './newPost/newPost';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -47,7 +48,8 @@ function App() {
         <Route path="/signup" element={<Signup user={user} />} />
         <Route path="/login" element={<Login user={user} />} />
         <Route path="/home" element={<Home user={user} />} />
-        <Route path="/posts/:id" element={<PostPage />} />
+        <Route path="/posts/:id" element={<PostPage user={user} />} />
+        <Route path="/newpost" element={<NewPost user={user} />} />
       </Routes>
       
     </>
