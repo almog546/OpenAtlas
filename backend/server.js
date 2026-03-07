@@ -26,6 +26,7 @@ app.use(
 );
 
 app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/posts', require('./routes/postRoutes'));
 
 
 app.use((err, req, res, next) => {
