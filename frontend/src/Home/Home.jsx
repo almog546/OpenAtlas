@@ -4,6 +4,7 @@ import api from '../api/axios';
 
 export default function Home() {
     const [posts, setPosts] = useState([]);
+    const [postorder, setPostorder] = useState('');
 
 
     useEffect(() => {
@@ -21,10 +22,21 @@ export default function Home() {
    function handlePostClick(id) {
         window.location.href = `/posts/${id}`;
     }
-   
+    function sortPostsnew() {
+        setPostorder('newest');
+        setPosts([...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+    }
+    function sortPostsold() {
+        setPostorder('oldest');
+        setPosts([...posts].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)));
+    }
     return (
         <div className={styles.container}>
             <h1>Welcome to OpenAtlas!</h1>
+            <div className={styles.sortOptions}>
+                <button onClick={() => sortPostsnew()} className={styles.new}>Newest</button>
+                <button onClick={() => sortPostsold()} className={styles.old}>Oldest</button>
+            </div>
             <div className={styles.posts}>
                 {posts.map(post => (
                     <div key={post.id} className={styles.post} onClick={() => handlePostClick(post.id)}>

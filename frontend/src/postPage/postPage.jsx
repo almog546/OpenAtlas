@@ -21,8 +21,12 @@ export default function PostPage() {
     }, [id]);
 
     if (!post) {
-        return <div className={styles.container}>Loading...</div>;
-    }
+    return (
+        <div className={styles.loading}>
+            <div className={styles.spinner}></div>
+        </div>
+    );
+}
     return (
         <div className={styles.container}>
             <h1>{post.title}</h1>
@@ -30,6 +34,8 @@ export default function PostPage() {
                 <span className={styles.author}>{post.author.name}</span>
                 <span>·</span>
                 <span>{new Date(post.createdAt).toLocaleDateString()}</span>
+                <span>·</span>
+                <span>{post.views} views</span>
             </div>
             <p>{post.content}</p>
         </div>

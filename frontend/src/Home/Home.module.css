@@ -61,3 +61,19 @@
 .postDetails span {
     color: var(--text-light);
 }
+.new, .old {
+    padding: 0.45rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+    border: 1px solid var(--border);
+    background-color: var(--bg-main);
+    color: var(--text-muted);
+}
+
+.new:hover, .old:hover {
+    background-color: var(--bg-muted);
+    color: var(--text-main);
+}

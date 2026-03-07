@@ -27,7 +27,9 @@ async function getpostbyid(req, res, next) {
     }
 }
 
+
 module.exports = {
     getPosts,
     getpostbyid,
+    
 };
