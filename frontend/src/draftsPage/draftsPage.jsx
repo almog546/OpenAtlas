@@ -63,6 +63,15 @@ async function handleEdit() {
 function toggleEdit() {
     setEditToggle((prev) => !prev);
 }
+  async function handleSubmit() {
+        try {
+            await api.post('/api/posts', { title: draftTitle, content: draftContent, category: draftCategory, picture: draftPicture });
+            navigate('/dashboard');
+        }
+        catch (err) {
+            console.error('Failed to create post', err);
+        }
+    }
     return (<>
      {!user ? (
                 <Navigate to="/login" replace />
