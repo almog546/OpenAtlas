@@ -2,8 +2,9 @@ import styles from './PostPage.module.css';
 import { useState, useEffect } from 'react';
 import api from '../api/axios';
 import { useParams } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
-export default function PostPage() {
+export default function PostPage({ user }) {
     const { id } = useParams();
     const [post, setPost] = useState(null);
 
@@ -28,6 +29,11 @@ export default function PostPage() {
     );
 }
     return (
+        <>
+        {!user ? (
+            <Navigate to="/login" replace />
+        ) : ( 
+            <> 
         <div className={styles.container}>
             <h1>{post.title}</h1>
             <div className={styles.postDetails}>
@@ -43,6 +49,7 @@ export default function PostPage() {
 
             <p>{post.content}</p>
         </div>
-    );
+        </>)}
+    </>);
 }
 

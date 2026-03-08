@@ -1,6 +1,6 @@
 import styles from './Dashboard.module.css';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { use, useState } from 'react';
 import api from '../api/axios';
 import { useEffect } from 'react';
 
@@ -23,22 +23,23 @@ export default function Dashboard({ user }) {
     }, []);
    useEffect(() => {
         async function fetchContent() {
-            if (!user?.id) return;
             try {
-                const response = await api.get('/api/posts');
-                setContent(response.data.filter((post) => post.authorId === user.id));
+                const response = await api.get('/api/posts/myposts');
+                setContent(response.data);
             }
             catch (err) {
                 console.error('Failed to fetch content', err);
             }
         }
         fetchContent();
-    }, [user?.id]);
+    }, []);
         
     const navigate = useNavigate();
+
         function handleToggleMenu(menu) {
         setToggleMenu(menu);
     }
+    
 
     return (<>
     {!user ? (
@@ -75,7 +76,24 @@ export default function Dashboard({ user }) {
         </div>}
 
 
-        {toggleMenu === 'Drafts' && <div className={styles.content}>Drafts Content</div>}
+        {toggleMenu === 'Drafts' && <div className={styles.content}>
+            {drafts.length === 0 ? (
+                <p>No drafts found. Start writing your first draft!</p>
+            ) : (
+                <>
+                {drafts.map(draft => (
+                    <div key={draft.id} className={styles.post} onClick={() => navigate(`/drafts/${draft.id}`)}>
+                        <h3>{draft.title}</h3>
+                        <div className={styles.postDetails}>
+                            <span>·</span>
+                            <span>{new Date(draft.createdAt).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                ))
+                }
+                </>
+            )}
+        </div>}
         {toggleMenu === 'Profile' && <div className={styles.content}>Profile Content</div>}
         </>
 
