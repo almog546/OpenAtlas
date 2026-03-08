@@ -114,11 +114,43 @@ async function deletemyposts(req, res, next) {
         next(error);
     }
 }
+async function editmyposts(req, res, next) {
+    try {
+        const { id } = req.params;
+        const { title, content, category, picture } = req.body;
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+        const post = await prisma.post.findUnique({
+            where: { id },
+        });
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        if (post.authorId !== userId) {
+            return res.status(403).json({ message: 'Forbidden' });
+        }
+        const updatedPost = await prisma.post.update({
+            where: { id },
+            data: {
+                    title,
+                    content,
+                    category,
+                    picture,
+            },
+        });
+        res.json(updatedPost);
+    } catch (error) {
+        next(error);
+    }
+}
 module.exports = {
     getPosts,
     getpostbyid,
     createPosts,
     getMyPosts,
     getmypostbyid,
-    deletemyposts
+    deletemyposts,
+    editmyposts
 };
