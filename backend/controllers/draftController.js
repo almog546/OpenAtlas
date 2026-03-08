@@ -80,10 +80,39 @@ async function deleteDraft(req, res, next) {
         next(error);
     }
 }
+async function editdrfat(req, res, next) {
+    try {
+        const { id } = req.params;
+        const { title, content, category, picture } = req.body;
+        const userId = req.session.userId;  
+        if (!userId) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+        const draft = await prisma.draft.findUnique({
+            where: { id },
+        });
+        if (!draft || draft.authorId !== userId) {
+            return res.status(404).json({ message: 'Draft not found' });
+        }
+        const updatedDraft = await prisma.draft.update({
+            where: { id },
+            data: {
+                title,
+                content,
+                category,
+                picture,
+            },
+        });
+        res.json(updatedDraft);
+    } catch (error) {
+        next(error);
+    }
+}
 
 module.exports = {
     createDraft,
     getDrafts,
     getDraftById,
+    editdrfat,
     deleteDraft
 };

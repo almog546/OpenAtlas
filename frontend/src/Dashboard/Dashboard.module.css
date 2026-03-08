@@ -36,6 +36,7 @@
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.15s, color 0.15s;
+    text-decoration: none;
 }
 
 .dashboardItem:hover {
@@ -84,6 +85,7 @@
     font-size: 0.82rem;
     color: var(--text-muted);
 }
+
 
 @media (max-width: 768px) {
     .container {

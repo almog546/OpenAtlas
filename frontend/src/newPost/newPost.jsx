@@ -14,7 +14,7 @@ export default function NewPost({ user }) {
      async function handleSubmit() {
         try {
             await api.post('/api/posts', { title, content, category, picture });
-            navigate('/home');
+            navigate('/dashboard');
         }
         catch (err) {
             console.error('Failed to create post', err);
@@ -23,7 +23,7 @@ export default function NewPost({ user }) {
     async function handleSaveDraft() {
         try {
             await api.post('/api/drafts', { title, content, category, picture });
-            navigate('/home');
+            navigate('/dashboard');
         }
         catch (err) {
             console.error('Failed to save draft', err);

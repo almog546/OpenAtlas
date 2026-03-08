@@ -3,11 +3,13 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { use, useState } from 'react';
 import api from '../api/axios';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Dashboard({ user }) {
     const [toggleMenu, setToggleMenu] = useState('MyArticles');
     const [content, setContent] = useState([]);
     const [drafts, setDrafts] = useState([]);  
+    
 
     useEffect(() => {
         async function fetchDrafts() {
@@ -51,7 +53,9 @@ export default function Dashboard({ user }) {
                         <ul className={styles.dashboard}>
                             <li className={styles.dashboardItem} onClick={() => handleToggleMenu('MyArticles')}> My Articles </li>
                             <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Drafts')}> Drafts </li>
+                            <Link to="/newpost" className={styles.dashboardItem}>Write Article</Link>
                             <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Profile')}>Profile</li>
+                            
                             </ul>
             
         </div>
