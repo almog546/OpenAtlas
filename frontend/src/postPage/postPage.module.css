@@ -48,6 +48,15 @@
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
 }
+.category {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--primary);
+    background-color: var(--primary-light);
+    border-radius: 9999px;
+}
 
 @keyframes spin {
     to {

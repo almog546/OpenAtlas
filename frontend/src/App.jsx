@@ -10,6 +10,8 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
 import PostPage from './postPage/postPage';
 import NewPost from './newPost/newPost';
+import Dashboard from './Dashboard/Dashboard';
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -26,7 +28,7 @@ function App() {
       }
     }
     fetchUser();
-  }, []);
+  }, [location]);
   async function onLogout() {
     try {
       await api.post('/api/auth/logout');
@@ -39,6 +41,7 @@ function App() {
   }
   const hideNavbar =
     location.pathname === '/login' || location.pathname === '/signup';
+    
 
 
   return (
@@ -50,6 +53,8 @@ function App() {
         <Route path="/home" element={<Home user={user} />} />
         <Route path="/posts/:id" element={<PostPage user={user} />} />
         <Route path="/newpost" element={<NewPost user={user} />} />
+        <Route path="/Dashboard" element={<Dashboard user={user} />} />
+       
       </Routes>
       
     </>

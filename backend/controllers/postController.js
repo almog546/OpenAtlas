@@ -36,6 +36,7 @@ async function createPosts(req, res, next) {
         if (!title || !content) {
             return res.status(400).json({ message: 'Title and content are required' });
         }
+     
         const post = await prisma.post.create({
             data: {
                 title,

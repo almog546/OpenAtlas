@@ -1,4 +1,5 @@
 
+
 .navbar {
     display: flex;
     align-items: center;
@@ -7,18 +8,31 @@
     height: 60px;
     background-color: var(--bg-main);
     border-bottom: 1px solid var(--border);
+    position: relative;
 }
 
 .logo {
     font-size: 1.1rem;
     font-weight: 700;
     color: var(--text-main);
+    text-decoration: none;
 }
 
 .userInfo {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
+    position: absolute;
+    right: 2rem;
+    top: 55px;
+    background-color: var(--bg-main);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.5rem;
+    flex-direction: column;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    z-index: 100;
+    min-width: 160px;
 }
 
 .link {
@@ -26,38 +40,100 @@
     font-weight: 500;
     color: var(--text-muted);
     text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    width: 100%;
 }
 
 .link:hover {
+    background-color: var(--bg-muted);
+    color: var(--text-main);
+}
+
+.newpost {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary);
+    text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    width: 100%;
+}
+
+.newpost:hover {
+    background-color: var(--primary-light);
+}
+
+.signupBtn {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 0.45rem 1rem;
+    background-color: var(--primary);
+    border-radius: 8px;
+    transition: background-color 0.15s;
+}
+
+.signupBtn:hover {
+    background-color: var(--primary-hover);
+}
+
+.userName {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.profile {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    width: 100%;
+}
+
+.profile:hover {
+    background-color: var(--bg-muted);
     color: var(--text-main);
 }
 
 .logoutButton {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     font-weight: 500;
-    color: var(--text-muted);
+    color: var(--danger);
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    width: 100%;
+    text-align: left;
+    transition: background-color 0.15s;
 }
 
 .logoutButton:hover {
-    color: var(--danger);
+    background-color: #fef2f2;
 }
-.newpost {
-    padding: 0.45rem 1rem;
-    font-size: 0.85rem;
-    font-weight: 500;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.15s, color 0.15s;
-    border: 1px solid var(--border);
-    background-color: var(--bg-main);
-    color: var(--text-muted);
-    text-decoration: none;
-}
-.newpost:hover {
-    background-color: var(--bg-hover);
-    color: var(--text-main);
+@media (max-width: 600px) {
+    .navbar {
+        padding: 0 1rem;
+    }
+
+    .userInfo {
+        right: 1rem;
+        min-width: 140px;
+    }
+
+    .logo {
+        font-size: 1rem;
+    }
+
+    .signupBtn,
+    .link {
+        font-size: 0.825rem;
+        padding: 0.4rem 0.75rem;
+    }
 }

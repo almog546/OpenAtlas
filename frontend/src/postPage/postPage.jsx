@@ -36,7 +36,11 @@ export default function PostPage() {
                 <span>{new Date(post.createdAt).toLocaleDateString()}</span>
                 <span>·</span>
                 <span>{post.views} views</span>
+                <span>·</span>
+                <span className={styles.category}>{post.category}</span>
             </div>
+          
+
             <p>{post.content}</p>
         </div>
     );
