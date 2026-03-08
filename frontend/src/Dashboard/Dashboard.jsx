@@ -62,7 +62,7 @@ export default function Dashboard({ user }) {
             ) : (
                 <>
                 {content.map(post => (
-                    <div key={post.id} className={styles.post} onClick={() => navigate(`/posts/${post.id}`)}>
+                    <div key={post.id} className={styles.post} onClick={() => navigate(`/myposts/${post.id}`)}>
                         <h3>{post.title}</h3>
                         <div className={styles.postDetails}>
                             <span>·</span>

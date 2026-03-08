@@ -12,6 +12,7 @@ import PostPage from './postPage/postPage';
 import NewPost from './newPost/newPost';
 import Dashboard from './Dashboard/Dashboard';
 import DraftsPage from './draftsPage/draftsPage';
+import MyPosts from './myPosts/myPosts';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -55,6 +56,7 @@ function App() {
         <Route path="/newpost" element={<NewPost user={user} />} />
         <Route path="/Dashboard" element={<Dashboard user={user} />} />
         <Route path="/drafts/:id" element={<DraftsPage user={user} />} />
+        <Route path="/myposts/:id" element={<MyPosts user={user} />} />
        
       </Routes>
       

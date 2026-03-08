@@ -66,9 +66,59 @@ async function getMyPosts(req, res, next) {
         next(error);
     }
 }
+
+async function getmypostbyid(req, res, next) {
+    try {
+        const { id } = req.params;
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+        const post = await prisma.post.findUnique({
+            where: { id },
+                include: { author: true },
+        });
+        if (!post ) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        if (post.authorId !== userId) {
+            return res.status(403).json({ message: 'Forbidden' });
+        }
+        res.json(post);
+    } catch (error) {
+        next(error);
+    }
+}
+
+async function deletemyposts(req, res, next) {
+    try {
+        const { id } = req.params;
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+        const post = await prisma.post.findUnique({
+            where: { id },
+        });
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        if (post.authorId !== userId) {
+            return res.status(403).json({ message: 'Forbidden' });
+        }
+        await prisma.post.delete({
+            where: { id },
+        });
+        res.json({ message: 'Post deleted' });
+    } catch (error) {
+        next(error);
+    }
+}
 module.exports = {
     getPosts,
     getpostbyid,
     createPosts,
-    getMyPosts
+    getMyPosts,
+    getmypostbyid,
+    deletemyposts
 };
