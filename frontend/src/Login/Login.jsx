@@ -1,7 +1,7 @@
 import styles from './Login.module.css';
 import { useState } from 'react';
 import api from '../api/axios';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 
 export default function Login( { user }) {
@@ -53,7 +53,7 @@ export default function Login( { user }) {
             </form>
         </div>
         ) : (
-            navigate('/home')
+            <Navigate to="/home" replace />
         )}
         
 

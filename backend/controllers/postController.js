@@ -51,9 +51,24 @@ async function createPosts(req, res, next) {
         next(error);
     }
 }
-
+async function getMyPosts(req, res, next) {
+    try {
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+        const posts = await prisma.post.findMany({
+            where: { authorId: userId },
+        });
+        res.json(posts);
+    }
+    catch (error) {
+        next(error);
+    }
+}
 module.exports = {
     getPosts,
     getpostbyid,
-    createPosts
+    createPosts,
+    getMyPosts
 };

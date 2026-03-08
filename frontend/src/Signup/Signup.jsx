@@ -2,7 +2,7 @@ import styles from './Signup.module.css';
 import { useState } from 'react';
 import api from '../api/axios';
 import * as yup from "yup"
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 
 export default function Signup( { user }) {
@@ -77,7 +77,7 @@ export default function Signup( { user }) {
             </form>
         </div>
         ) : (
-            navigate('/home')
+            <Navigate to="/home" replace />
         )}
    </> );
 }

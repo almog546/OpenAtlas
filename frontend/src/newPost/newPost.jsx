@@ -1,5 +1,5 @@
 import styles from './NewPost.module.css';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import api from '../api/axios';
 
@@ -34,7 +34,7 @@ export default function NewPost({ user }) {
 
     return (<>
     {!user ? (
-        navigate('/login')
+        <Navigate to="/login" replace />
     ) : (
         <div className={styles.container}>
             <h1>Write Article</h1>
