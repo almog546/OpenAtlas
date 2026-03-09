@@ -346,7 +346,89 @@ async function editReply(req, res, next) {
         next(error);
     }
 }
-
+async function bookMarkpost(req, res, next) {
+    try {
+        const { id } = req.params;
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+        const post = await prisma.post.findUnique({
+            where: { id },
+        });
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        await prisma.bookmark.create({
+            data: {
+                userId,
+                postId: id,
+            },
+        });
+        res.json({ message: 'Post bookmarked' });
+    } catch (error) {
+        next(error);
+    }
+}
+async function unbookmarkpost(req, res, next) {
+    try {
+        const { id } = req.params;
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+        const bookmark = await prisma.bookmark.findUnique({
+            where: {
+                userId_postId: {
+                    userId,
+                    postId: id,
+                },
+            },
+        });
+        if (!bookmark) {
+            return res.status(404).json({ message: 'Bookmark not found' });
+        }
+        await prisma.bookmark.delete({
+            where: {
+                userId_postId: {
+                    userId,
+                    postId: id,
+                },
+            },
+        });
+        res.json({ message: 'Post unbookmarked' });
+    } catch (error) {
+        next(error);
+    }
+}
+async function getBookmarkedPosts(req, res, next) {
+    try {
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+        const bookmarks = await prisma.bookmark.findMany({
+            where: { userId },
+            include: {
+                post: {
+                    include: {
+                        author: {
+                            include: {
+                                profile: true,
+                            },
+                        },
+                    },
+                },
+            },
+        });
+        res.json(bookmarks);
+    }
+        catch (error) {
+        next(error);
+    }
+}
+           
+        
 
 module.exports = {
     getPosts,
@@ -364,4 +446,7 @@ module.exports = {
     getRepliesByCommentId,
     deleteReply,
     editReply,
+    bookMarkpost,
+    unbookmarkpost,
+    getBookmarkedPosts,
 };

@@ -99,7 +99,8 @@ async function updateProfile() {
                             <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Drafts')}> Drafts </li>
                             <Link to="/newpost" className={styles.dashboardItem}>Write Article</Link>
                             <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Profile')}>Profile</li>
-                            
+                             <li className={styles.dashboardItem} onClick={() => handleToggleMenu('SavedArticles')}>Saved Articles</li>
+                              <li className={styles.dashboardItem} onClick={() => handleToggleMenu('FollowingAuthors')}>Following Authors</li>
                             </ul>
             
         </div>

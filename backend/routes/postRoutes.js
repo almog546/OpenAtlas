@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const { getPosts,getpostbyid,createPosts,getMyPosts,getmypostbyid,deletemyposts,editmyposts,
     createComment, getCommentsByPostId, deleteComment,editComment,
-    replyToComment,getRepliesByCommentId,deleteReply,editReply } = require('../controllers/postController');
+    replyToComment,getRepliesByCommentId,deleteReply,editReply,
+    bookMarkpost,unbookmarkpost,getBookmarkedPosts
+ } = require('../controllers/postController');
 
 router.get('/', getPosts);
 router.get('/myposts', getMyPosts);
@@ -17,6 +19,9 @@ router.put('/comments/:id', editComment);
 router.delete('/comments/:id', deleteComment);
 router.post('/comments/:id/replies', replyToComment);
 router.get('/comments/:id/replies', getRepliesByCommentId);
+router.post('/:id/bookmark', bookMarkpost);
+router.delete('/:id/bookmark', unbookmarkpost);
+router.get('/bookmarks', getBookmarkedPosts);
 
 
 
