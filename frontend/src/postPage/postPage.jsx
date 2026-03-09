@@ -3,10 +3,12 @@ import { useState, useEffect } from 'react';
 import api from '../api/axios';
 import { useParams } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function PostPage({ user }) {
     const { id } = useParams();
     const [post, setPost] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchPost() {
@@ -28,6 +30,9 @@ export default function PostPage({ user }) {
         </div>
     );
 }
+function handleAuthorClick(id) {
+    navigate(`/profile/${id}`);
+}
     return (
         <>
         {!user ? (
@@ -37,7 +42,7 @@ export default function PostPage({ user }) {
         <div className={styles.container}>
             <h1>{post.title}</h1>
             <div className={styles.postDetails}>
-                <span className={styles.author}>{post.author.name}</span>
+                <span className={styles.author} onClick={() => handleAuthorClick(post.author.id)}>{post.author.name}</span>
                 <span>·</span>
                 <span>{new Date(post.createdAt).toLocaleDateString()}</span>
                 <span>·</span>

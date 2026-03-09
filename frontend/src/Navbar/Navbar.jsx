@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import styles from './Navbar.module.css';
 import { UserCircle } from 'lucide-react';
 import { useState } from 'react';
-import { useEffect } from 'react';
+
 
 export default function Navbar({ user, onLogout }) {
     const [toggleMenu, setToggleMenu] = useState(false);

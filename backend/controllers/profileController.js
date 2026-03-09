@@ -99,9 +99,67 @@ async function createMyProfile(req, res, next) {
         next(error);
     }
 }
+async function otherPeopleProfile(req, res, next) {
+    try {
+        const { id } = req.params;
+        const profile = await prisma.profile.findUnique({
+            where: { userId: id },
+            include: {
+                user: {
+                    include: {
+                        posts: {
+                            where: { published: true },
+                            orderBy: { createdAt: 'desc' },
+                        },
+                    },
+                },
+            },
+        });
+        if (!profile) {
+            return res.status(404).json({ message: 'Profile not found' });
+        }
+        res.json(profile);
+    }
+    catch (error) {
+        next(error);
+    }
+}
+async function profileposts(req, res, next) {
+    try {
+        const { id } = req.params;
+
+        if (!id) {
+            return res.status(400).json({ message: 'User id is required' });
+        }
+
+        const posts = await prisma.post.findMany({
+            where: {
+                authorId: id,
+                published: true
+            },
+            orderBy: {
+                createdAt: 'desc'
+            },
+            include: {
+                author: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
+        });
+
+        res.json(posts);
+
+    } catch (error) {
+        next(error);
+    }
+}
 
 module.exports = {
     getMyProfile,
     updateMyProfile,
     createMyProfile,
+    otherPeopleProfile,
+    profileposts,
 };
