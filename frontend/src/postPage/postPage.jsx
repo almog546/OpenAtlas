@@ -18,7 +18,7 @@ export default function PostPage({ user }) {
     const [replyContent, setReplyContent] = useState('');
     const [replyingToCommentId, setReplyingToCommentId] = useState(null);
     const [replies, setReplies] = useState([]);
-    const [editReplyContent, setEditReplyContent] = useState('');
+    const [bookmarked, setBookmarked] = useState(false);
     
 
 useEffect(() => {
@@ -58,6 +58,19 @@ useEffect(() => {
         }
         fetchPost();
     }, [id]);
+
+    useEffect(() => {
+        if (!user) return;
+        async function fetchBookmarkStatus() {
+            try {
+                const response = await api.get(`/api/posts/${id}/bookmark/check`);
+                setBookmarked(response.data.bookmarked);
+            } catch (err) {
+                console.error('Failed to fetch bookmark status', err);
+            }
+        }
+        fetchBookmarkStatus();
+    }, [id, user]);
 
     if (!post) {
     return (
@@ -122,6 +135,20 @@ async function handleSubmitReply(id) {
         console.error('Failed to submit reply', err);
     }
 }
+async function handleBookmark() {
+    try {
+        if (bookmarked) {
+            await api.delete(`/api/posts/${id}/bookmark`);
+            setBookmarked(false);
+        }
+        else {
+            await api.post(`/api/posts/${id}/bookmark`);
+            setBookmarked(true);
+        }
+    } catch (err) {
+        console.error('Failed to toggle bookmark', err);
+    }
+}
 
 
 
@@ -141,6 +168,13 @@ async function handleSubmitReply(id) {
                 <span>{post.views} views</span>
                 <span>·</span>
                 <span className={styles.category}>{post.category}</span>
+                {user && (
+                    <button onClick={handleBookmark} className={styles.bookmarkButton}>
+                        {bookmarked ? 'Unbookmark' : 'Bookmark'}
+                    </button>
+                )}
+            
+          
             </div>
             <p>{post.content}</p>
             <div className={styles.comments}>

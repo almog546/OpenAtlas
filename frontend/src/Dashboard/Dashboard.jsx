@@ -12,9 +12,21 @@ export default function Dashboard({ user }) {
     const [profile, setProfile] = useState(null);
     const [bio, setBio] = useState('');
     const [avatar, setAvatar] = useState('');
+    const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
     
 
-
+    useEffect(() => {
+        async function fetchBookmarkedPosts() {
+            try {
+                const response = await api.get('/api/posts/bookmarks');
+                setBookmarkedPosts(response.data);
+            }
+            catch (err) {
+                console.error('Failed to fetch bookmarked posts', err);
+            }
+        }
+        fetchBookmarkedPosts();
+    }, []);
     useEffect(() => {
     async function fetchProfile() {
         try {
@@ -182,6 +194,26 @@ async function updateProfile() {
             <button onClick={createProfile}>Create Profile</button>
         ) : (
             <button onClick={updateProfile}>Update Profile</button>
+        )}
+    </div>
+)}
+{toggleMenu === 'SavedArticles' && (
+    <div className={styles.content}>
+        <h1>Saved Articles</h1>
+        {bookmarkedPosts.length === 0 ? (
+            <p classname ={styles.para}>No saved articles found. Start exploring and bookmark your favorite articles!</p>
+        ) : (
+            <>
+            {bookmarkedPosts.map(post => (
+                <div key={post.id} className={styles.post} onClick={() => navigate(`/posts/${post.post.id}`)}>
+                    <h3>{post.post.title}</h3>
+                    <div className={styles.postDetails}>                     
+                        <span>{new Date(post.createdAt).toLocaleDateString()}</span>
+                    </div>
+                </div>
+            ))
+            }
+            </>
         )}
     </div>
 )}

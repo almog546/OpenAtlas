@@ -377,12 +377,10 @@ async function unbookmarkpost(req, res, next) {
         if (!userId) {
             return res.status(401).json({ message: 'Not authenticated' });
         }
-        const bookmark = await prisma.bookmark.findUnique({
+        const bookmark = await prisma.bookmark.findFirst({
             where: {
-                userId_postId: {
-                    userId,
-                    postId: id,
-                },
+                userId,
+                postId: id,
             },
         });
         if (!bookmark) {
@@ -390,10 +388,7 @@ async function unbookmarkpost(req, res, next) {
         }
         await prisma.bookmark.delete({
             where: {
-                userId_postId: {
-                    userId,
-                    postId: id,
-                },
+                id: bookmark.id,
             },
         });
         res.json({ message: 'Post unbookmarked' });
@@ -427,6 +422,25 @@ async function getBookmarkedPosts(req, res, next) {
         next(error);
     }
 }
+
+async function checkBookmarkStatus(req, res, next) {
+    try {
+        const { id } = req.params;
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.json({ bookmarked: false });
+        }
+        const bookmark = await prisma.bookmark.findFirst({
+            where: {
+                userId,
+                postId: id,
+            },
+        });
+        res.json({ bookmarked: !!bookmark });
+    } catch (error) {
+        next(error);
+    }
+}
            
         
 
@@ -449,4 +463,5 @@ module.exports = {
     bookMarkpost,
     unbookmarkpost,
     getBookmarkedPosts,
+    checkBookmarkStatus,
 };
