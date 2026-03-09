@@ -9,6 +9,21 @@ export default function PostPage({ user }) {
     const { id } = useParams();
     const [post, setPost] = useState(null);
     const navigate = useNavigate();
+    const [comments, setComments] = useState([]);
+
+
+    useEffect(() => {
+        async function fetchComments() {
+            try {
+                const response = await api.get(`/api/comment/post/${id}`);
+                setComments(response.data);
+            }
+            catch (err) {
+                console.error('Failed to fetch comments', err);
+            }
+        }
+        fetchComments();
+    }, [id]);
 
     useEffect(() => {
         async function fetchPost() {
@@ -35,9 +50,7 @@ function handleAuthorClick(id) {
 }
     return (
         <>
-        {!user ? (
-            <Navigate to="/login" replace />
-        ) : ( 
+         
             <> 
         <div className={styles.container}>
             <h1>{post.title}</h1>
@@ -50,11 +63,12 @@ function handleAuthorClick(id) {
                 <span>·</span>
                 <span className={styles.category}>{post.category}</span>
             </div>
-          
-
             <p>{post.content}</p>
+            <div className={styles.comments}>
+                <h2>Comments</h2>
+            </div>
         </div>
-        </>)}
+        </>
     </>);
 }
 
