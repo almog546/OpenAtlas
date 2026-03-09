@@ -87,6 +87,112 @@
 }
 
 
+.content h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.02em;
+    margin-bottom: 1.75rem;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border);
+    margin-bottom: 1rem;
+}
+
+.content h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.25rem;
+}
+
+.content h2 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-light);
+    margin-top: 1rem;
+    margin-bottom: 0.3rem;
+}
+
+.content p {
+    font-size: 0.925rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.input {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    background-color: var(--bg-subtle);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+    margin-bottom: 0.75rem;
+}
+
+.input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-light);
+    background-color: var(--bg-main);
+}
+
+.textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    background-color: var(--bg-subtle);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.6;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+    margin-bottom: 1rem;
+}
+
+.textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-light);
+    background-color: var(--bg-main);
+}
+
+.content button {
+    padding: 0.65rem 1.4rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    background-color: var(--primary);
+    color: #ffffff;
+    transition: background-color 0.15s, transform 0.1s;
+    font-family: inherit;
+}
+
+.content button:hover {
+    background-color: var(--primary-hover);
+}
+
+.content button:active {
+    transform: scale(0.98);
+}
+
+
 @media (max-width: 768px) {
     .container {
         width: 100%;

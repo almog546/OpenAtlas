@@ -37,18 +37,26 @@ export default function Home() {
   ? fuse.search(search).map(r => r.item)
   : posts;
 
-    
+     
    function handlePostClick(id) {
         window.location.href = `/posts/${id}`;
     }
+    
     function sortPostsnew() {
         setPostorder('newest');
         setPosts([...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
     }
+
     function sortPostsold() {
         setPostorder('oldest');
         setPosts([...posts].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)));
     }
+
+
+
+
+
+
     return (
    <div className={styles.container}>
     <header className={styles.header}>

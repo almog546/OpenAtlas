@@ -9,6 +9,26 @@ export default function Dashboard({ user }) {
     const [toggleMenu, setToggleMenu] = useState('MyArticles');
     const [content, setContent] = useState([]);
     const [drafts, setDrafts] = useState([]);  
+    const [profile, setProfile] = useState(null);
+    const [bio, setBio] = useState('');
+    const [avatar, setAvatar] = useState('');
+    
+
+
+    useEffect(() => {
+    async function fetchProfile() {
+        try {
+            const response = await api.get('/api/profile');
+            setProfile(response.data);
+            setBio(response.data.bio || '');
+            setAvatar(response.data.avatar || '');
+        }
+        catch (err) {
+            console.error('Failed to fetch profile', err);
+        }
+    }
+    fetchProfile();
+}, []);
     
 
     useEffect(() => {
@@ -41,6 +61,30 @@ export default function Dashboard({ user }) {
         function handleToggleMenu(menu) {
         setToggleMenu(menu);
     }
+    async function createProfile() {
+    try {
+        const response = await api.post('/api/profile', { bio, avatar });
+        setProfile(response.data);
+        setBio(response.data.bio || '');
+        setAvatar(response.data.avatar || '');
+    }
+    catch (err) {
+        console.error('Failed to create profile', err);
+    }
+}
+
+async function updateProfile() {
+    try {
+        const response = await api.put('/api/profile', { bio, avatar });
+        setProfile(response.data);
+        setBio(response.data.bio || '');
+        setAvatar(response.data.avatar || '');
+    }
+    catch (err) {
+        console.error('Failed to update profile', err);
+    }
+}
+
     
 
     return (<>
@@ -98,9 +142,49 @@ export default function Dashboard({ user }) {
                 </>
             )}
         </div>}
-        {toggleMenu === 'Profile' && <div className={styles.content}>Profile Content</div>}
-        </>
+       {toggleMenu === 'Profile' && (
+    <div className={styles.content}>
+        <h1>Profile</h1>
 
+        {profile ? (
+            <div>
+                <img
+                    src={profile.avatar || `https://ui-avatars.com/api/?name=${profile.user.name}`}
+                    alt="avatar"
+                    className={styles.avatar}
+                />
+
+                <h3>{profile.user.name}</h3>
+                <h2>Bio:</h2>
+                <p>{profile.bio || 'No bio yet'}</p>
+            </div>
+        ) : (
+            <p>No profile found. Create your profile to share more about yourself!</p>
+        )}
+
+        <input
+            type="text"
+            value={avatar}
+            onChange={(e) => setAvatar(e.target.value)}
+            placeholder="Paste avatar image URL..."
+            className={styles.input}
+        />
+
+        <textarea
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            placeholder="Write your bio here..."
+            className={styles.textarea}
+        />
+
+        {!profile ? (
+            <button onClick={createProfile}>Create Profile</button>
+        ) : (
+            <button onClick={updateProfile}>Update Profile</button>
+        )}
+    </div>
+)}
+    </>
     )}
     </>);
 } 
