@@ -245,7 +245,107 @@ async function editComment(req, res, next) {
         next(error);
     }
 }
-
+async function replyToComment(req, res, next) {
+    try {
+        const { id } = req.params; 
+        const { content } = req.body;
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+        if (!content) {
+            return res.status(400).json({ message: 'Content is required' });
+        }
+        const parentComment = await prisma.comment.findUnique({
+            where: { id },
+        });
+        if (!parentComment) {
+            return res.status(404).json({ message: 'Parent comment not found' });
+        }
+        const reply = await prisma.reply.create({
+            data: {
+                content,
+                commentId: id,
+                authorId: userId,
+            },
+            include: {
+                author: {
+                    include: {
+                        profile: true,
+                    },
+                },
+            },
+        });
+        res.status(201).json(reply);
+    } catch (error) {
+        next(error);
+    }
+}
+async function getRepliesByCommentId(req, res, next) {
+    try {
+        const { id } = req.params;
+        const replies = await prisma.reply.findMany({
+            where: { commentId: id },
+            include: {
+                author: {
+                    include: {
+                        profile: true,
+                    },
+                },
+            },
+        });
+        res.json(replies);
+    } catch (error) {
+        next(error);
+    }
+}
+async function deleteReply(req, res, next) {
+    try {
+        const { id } = req.params;
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+        const reply = await prisma.reply.findUnique({
+            where: { id },
+        });
+        if (!reply || reply.authorId !== userId) {
+            return res.status(404).json({ message: 'Reply not found or unauthorized' });
+        }
+        await prisma.reply.delete({
+            where: { id },
+        });
+        res.json({ message: 'Reply deleted' });
+    } catch (error) {
+        next(error);
+    }
+}
+async function editReply(req, res, next) {
+    try {
+        const { id } = req.params;
+        const { content } = req.body;
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+        const reply = await prisma.reply.findUnique({
+            where: { id },
+        });
+        if (!reply || reply.authorId !== userId) {
+            return res.status(404).json({ message: 'Reply not found or unauthorized' });
+        }
+        if (!content) {
+            return res.status(400).json({ message: 'Content is required' });
+        }
+        const updatedReply = await prisma.reply.update({
+            where: { id },
+            data: { content },
+        });
+        res.json(updatedReply);
+    } catch (error) {
+        next(error);
+    }
+}
 
 
 module.exports = {
@@ -260,4 +360,8 @@ module.exports = {
     getCommentsByPostId,
     deleteComment,
     editComment,
+    replyToComment,
+    getRepliesByCommentId,
+    deleteReply,
+    editReply,
 };

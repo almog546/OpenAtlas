@@ -14,7 +14,24 @@ export default function PostPage({ user }) {
     const [editedCommentContent, setEditedCommentContent] = useState('');
     const [edittoggle, setEditToggle] = useState(false);
     const [editingCommentId, setEditingCommentId] = useState(null);
+    const [replyToggle, setReplyToggle] = useState(false);
+    const [replyContent, setReplyContent] = useState('');
+    const [replyingToCommentId, setReplyingToCommentId] = useState(null);
+    const [replies, setReplies] = useState([]);
+    const [editReplyContent, setEditReplyContent] = useState('');
     
+
+useEffect(() => {
+        async function fetchReplies() {
+            try {
+                const response = await api.get(`/api/posts/comments/${id}/replies`);
+                setReplies(response.data);
+            } catch (err) {
+                console.error('Failed to fetch replies', err);
+            }
+        }
+        fetchReplies();
+    }, [id]);
 
 
     useEffect(() => {
@@ -83,8 +100,30 @@ async function handleEditComment(id) {
     }
 }
 function toggleEdit() {
-    setEditToggle((prev) => !prev);
+    setEditToggle(true);
 }
+function toggleUnedit() {
+    setEditToggle(false);
+}
+function toggleReply() {
+    setReplyToggle(true);
+}
+function toggleReplying() {
+    setReplyToggle(false);
+}
+async function handleSubmitReply(id) {
+    try {
+        const response = await api.post(`/api/posts/comments/${id}/replies`,
+                    { content: replyContent, commentId: id, authorId: user.id });
+        setReplies([...replies, response.data]);
+        setReplyContent('');
+        toggleReplying();
+    } catch (err) {
+        console.error('Failed to submit reply', err);
+    }
+}
+
+
 
 
 
@@ -115,7 +154,14 @@ function toggleEdit() {
                 <button onClick={handleAddComment} className={styles.commentButton}>Submit</button>
                 {comments.map(comment => (
                     <div key={comment.id} className={styles.comment}>
-                        <img src={comment.author.profile?.avatar || '/default-avatar.png'} alt={comment.author.name} className={styles.commentAuthorImage} />
+                {comment.author.profile?.avatar? (
+                        <img src={comment.author.profile.avatar} alt={comment.author.name} className={styles.commentAuthorImage} />
+                    ) : (
+                        <div className={styles.commentAuthorPlaceholder}>{comment.author.name.charAt(0).toUpperCase()}</div>
+                    )
+                    
+                }
+                      
                         <span className={styles.commentAuthor} onClick={() => handleAuthorClick(comment.author.id)}>{comment.author.name}</span>
                         <span>·</span>
                         <span>{new Date(comment.createdAt).toLocaleDateString()}</span>
@@ -127,15 +173,43 @@ function toggleEdit() {
                                     className={styles.commentInput}
                                 />
                                 <button onClick={() => handleEditComment(comment.id)} className={styles.commentButton}>Save</button>
-                                <button onClick={() => { toggleEdit(); setEditingCommentId(null); setEditedCommentContent(''); }} className={styles.commentButton}>Unedit</button>
+                                <button onClick={toggleUnedit} className={styles.commentButton}>Unedit</button>
+                                
                             </>
                         ) : (
                             <>
                                 <p>{comment.content}</p>
-                                <button onClick={() => { setEditingCommentId(comment.id); setEditedCommentContent(comment.content); toggleEdit(); }} className={styles.commentButton}>Edit</button>
+                                 {user?.id === comment.authorId ? (<>
+                                <button onClick={toggleEdit} className={styles.commentButton}>Edit</button>
+                                <button onClick={() => handleDeleteComment(comment.id)} className={styles.commentButton}>Delete</button>
+                                </>) : 
+                                <>
+                                {user && (<>
+                                {!replyToggle &&(
+                                      <button className={styles.commentButton} onClick={() => { setReplyToggle(true); setReplyingToCommentId(comment.id); }}>Reply</button>
+                                )}
+                               </>)}
+                              
+                                {replyToggle && replyingToCommentId === comment.id && (
+                                    <>
+                                        <textarea
+                                            value={replyContent}
+                                            onChange={(e) => setReplyContent(e.target.value)}
+                                            placeholder="Write your reply..."
+                                            className={styles.commentInput}
+                                        />
+                                        <button  className={styles.commentButton} onClick={() => handleSubmitReply(comment.id)}>Submit Reply</button>
+                                        <button onClick={toggleReplying} className={styles.commentButton}>Cancel Reply</button>
+                                    </>
+                                )}
+                                {replies.filter(reply => reply.commentId === comment.id).map(reply => (<div key={reply.id}><p className={styles.commentReply}>{reply.content}</p></div>))}
+                              
+                                </>
+                                
+                        }
                             </>
                         )}
-                        <button onClick={() => handleDeleteComment(comment.id)} className={styles.commentButton}>Delete</button>
+                        
                     </div>
                 ))}
                

@@ -67,6 +67,18 @@
     object-fit: cover;
     margin-right: 0.5rem;
 }
+.commentAuthorPlaceholder {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--border);
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    margin-right: 0.5rem;
+}
 
 @keyframes spin {
     to {

@@ -23,6 +23,7 @@ model User {
   comments  Comment[]
   drafts     Draft[]
   profile   Profile?
+  replies    reply[]
 }
 model Post {
   id        String   @id @default(cuid())
@@ -41,6 +42,7 @@ model Post {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
   
 
 }
@@ -51,6 +53,16 @@ model Comment {
   author      User     @relation(fields: [authorId], references: [id])
   postId    String
   post      Post     @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+  replies    reply[]
+}
+model reply {
+  id        String   @id @default(cuid())
+  content   String
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id])
+  commentId    String
+  comment      Comment     @relation(fields: [commentId], references: [id])
   createdAt DateTime @default(now())
 }
 model Draft {

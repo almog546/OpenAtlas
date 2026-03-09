@@ -58,7 +58,7 @@ export default function OtherProfile({ user }) {
 <>
         <h1>{profile.user.name}'s Profile</h1>
         <div className={styles.profileInfo}>
-            <img src={profile.avatar || '/default-avatar.png'} alt="Avatar" className={styles.avatar} />
+            <img src={profile.avatar || profile.user.name.charAt(0).toUpperCase()} alt="Avatar" className={styles.avatar} />
         </div>
         <div className={styles.bio}>
             <h2>Bio</h2>
