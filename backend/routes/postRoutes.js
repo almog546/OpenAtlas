@@ -9,10 +9,10 @@ router.post('/', createPosts);
 router.get('/myposts/:id', getmypostbyid);
 router.delete('/myposts/:id', deletemyposts);
 router.put('/myposts/:id', editmyposts);
-router.post('/comment', createComment);
-router.get('/comment/post/:postId', getCommentsByPostId);
-router.delete('/comment/:id', deleteComment);
-router.put('/comment/:id', editComment);
+router.post('/:postId/comments', createComment);
+router.get('/:postId/comments', getCommentsByPostId);
+router.put('/comments/:id', editComment);
+router.delete('/comments/:id', deleteComment);
 
 
 module.exports = router;

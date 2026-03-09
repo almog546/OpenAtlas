@@ -165,9 +165,13 @@ async function createComment(req, res, next) {
                 authorId: userId,
 
             },
-            orderBy: {
-                createdAt: 'desc',
-            },
+            include: {
+                 author:{
+                    include: {
+                        profile: true,
+                    },
+                },
+                 }
             
         });
         res.status(201).json(comment);
@@ -180,7 +184,13 @@ async function getCommentsByPostId(req, res, next) {
         const { postId } = req.params;
         const comments = await prisma.comment.findMany({
             where: { postId },
-            include: { author: true },
+            include: {
+                author: {
+                    include: {
+                        profile: true,
+                    },
+                },
+            },
         });
         res.json(comments);
     }
@@ -222,6 +232,9 @@ async function editComment(req, res, next) {
         });
         if (!comment || comment.authorId !== userId) {
             return res.status(404).json({ message: 'Comment not found or unauthorized' });
+        }
+        if (!content) {
+            return res.status(400).json({ message: 'Content is required' });
         }
         const updatedComment = await prisma.comment.update({
             where: { id },
