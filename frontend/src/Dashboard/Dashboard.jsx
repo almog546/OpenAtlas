@@ -13,7 +13,39 @@ export default function Dashboard({ user }) {
     const [bio, setBio] = useState('');
     const [avatar, setAvatar] = useState('');
     const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
-    
+    const [followingAuthors, setFollowingAuthors] = useState([]);
+    const [AuthorsFollowers, setAuthorsFollowers] = useState([]);
+    const [followersCount, setFollowersCount] = useState(0);
+
+
+
+
+    useEffect(() => {
+        async function fetchAuthorsFollowers() {
+            try {
+                const response = await api.get('/api/follow/followers');
+                setAuthorsFollowers(response.data); 
+                setFollowersCount(response.data.length);
+            }
+            catch (err) {
+                console.error('Failed to fetch authors followers', err);
+            }
+        }
+        fetchAuthorsFollowers();
+    }, []);
+
+    useEffect(() => {
+        async function fetchFollowingAuthors() {
+            try {
+                const response = await api.get('/api/follow/following');
+                setFollowingAuthors(response.data);
+            }
+            catch (err) {
+                console.error('Failed to fetch following authors', err);
+            }
+        }
+        fetchFollowingAuthors();
+    }, []);
 
     useEffect(() => {
         async function fetchBookmarkedPosts() {
@@ -97,6 +129,8 @@ async function updateProfile() {
     }
 }
 
+
+
     
 
     return (<>
@@ -112,7 +146,8 @@ async function updateProfile() {
                             <Link to="/newpost" className={styles.dashboardItem}>Write Article</Link>
                             <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Profile')}>Profile</li>
                              <li className={styles.dashboardItem} onClick={() => handleToggleMenu('SavedArticles')}>Saved Articles</li>
-                              <li className={styles.dashboardItem} onClick={() => handleToggleMenu('FollowingAuthors')}>Following Authors</li>
+                              <li className={styles.dashboardItem} onClick={() => handleToggleMenu('FollowingAuthors')}>Following </li>
+                             <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Followers')}>Followers </li> 
                             </ul>
             
         </div>
@@ -201,7 +236,7 @@ async function updateProfile() {
     <div className={styles.content}>
         <h1>Saved Articles</h1>
         {bookmarkedPosts.length === 0 ? (
-            <p classname ={styles.para}>No saved articles found. Start exploring and bookmark your favorite articles!</p>
+            <p className={styles.para}>No saved articles found. Start exploring and bookmark your favorite articles!</p>
         ) : (
             <>
             {bookmarkedPosts.map(post => (
@@ -217,7 +252,62 @@ async function updateProfile() {
         )}
     </div>
 )}
-    </>
+{toggleMenu === 'FollowingAuthors' && (
+    <div className={styles.Followingcontent}>
+        <h1>Following Authors</h1>
+        {followingAuthors.length === 0 ? (
+            <p className={styles.Followingpara}>No followed authors found. Start exploring and follow authors you like!</p>
+        ) : (
+            <>
+            {followingAuthors.map(author => (
+                <div key={author.following.id} className={styles.Followingpost} onClick={() => navigate(`/profile/${author.following.id}`)}>
+                     <div className={styles.FollowingavatarContainer}>
+                    {author.following.profile?.avatar ? (
+                     <img src={author.following.profile.avatar} alt="Avatar" className={styles.Followingavatar} />
+                       ) : (
+                      <div className={styles.FollowingavatarFallback}>
+                       {author.following.name.charAt(0).toUpperCase()}
+                        </div>
+)}
+                    <h3>{author.following.name}</h3>
+                    </div>
+                    <div className={styles.FollowingpostDetails}>
+                        <span>{author.followersCount || 0} followers</span>
+                    </div>
+                </div>
+            ))
+            }
+            </>
+        )}
+    </div>
+)}
+{toggleMenu === 'Followers' && (
+    <div className={styles.Followerscontent}>
+        <h1>Followers {followersCount}</h1>
+        {AuthorsFollowers.length === 0 ? (
+            <p className={styles.Followerspara}>No followers found. Engage with the community to gain followers!</p>
+        ) : (
+            <>
+            {AuthorsFollowers.map(follower => (
+                <div key={follower.follower.id} className={styles.Followerspost} onClick={() => navigate(`/profile/${follower.follower.id}`)}>
+                     <div className={styles.FollowersavatarContainer}>
+                    {follower.follower.profile?.avatar ? (
+                        <img src={follower.follower.profile.avatar} alt="Avatar" className={styles.Followersavatar} />
+                          ) : (
+                            <div className={styles.FollowersavatarFallback}>
+                                {follower.follower.name.charAt(0).toUpperCase()}
+                            </div>
+                        )}
+                    <h3>{follower.follower.name}</h3>
+                    </div>
+                </div>
+            ))
+            }
+            </>
+        )}
+    </div>
+)}
+        </>
     )}
     </>);
-} 
+}

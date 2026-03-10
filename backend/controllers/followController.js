@@ -65,10 +65,9 @@ async function unfollowUser(req, res, next) {
 }
 async function getFollowers(req, res, next) {
     try {
-        const { id } = req.params;
-
+        const userId = req.session.userId;
         const followers = await prisma.follow.findMany({
-            where: { followingId: id },
+            where: { followingId: userId },
             select: {
                 follower: {
                     select: {
@@ -83,7 +82,6 @@ async function getFollowers(req, res, next) {
                 },
             },
         });
-
         res.json(followers);
     } catch (error) {
         next(error);
@@ -91,12 +89,18 @@ async function getFollowers(req, res, next) {
 }
 
             
-async function getFollowing(req, res, next) {
+
+
+async function getMyFollowing(req, res, next) {
     try {
-        const { id } = req.params;
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+        
 
         const following = await prisma.follow.findMany({
-            where: { followerId: id },
+            where: { followerId: userId },
             select: {
                 following: {
                     select: {
@@ -145,6 +149,6 @@ module.exports = {
     followUser,
     unfollowUser,
     getFollowers,
-    getFollowing,
+    getMyFollowing,
     checkIfFollowing,
 };
