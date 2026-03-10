@@ -131,6 +131,17 @@ async function editmyposts(req, res, next) {
         if (post.authorId !== userId) {
             return res.status(403).json({ message: 'Forbidden' });
         }
+       await prisma.postHistory.create({
+            data: {
+                title: post.title,
+                content: post.content,
+                category: post.category,
+                picture: post.picture,
+                postId: post.id,
+                authorId: userId,
+            },
+        });
+
         const updatedPost = await prisma.post.update({
             where: { id },
             data: {
@@ -516,8 +527,57 @@ async function getPostsByAuthorId(req, res, next) {
         next(error);
     }
 }
-
-
+async function getEditedHistory(req, res, next) {
+    try {
+        const { id } = req.params;
+         const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+        const post = await prisma.post.findUnique({
+            where: { id },
+        });
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        if (post.authorId !== userId) {
+            return res.status(403).json({ message: 'Not authorized' });
+        }
+        const postHistory = await prisma.postHistory.findMany({
+            where: { postId: id },
+        });
+        res.json(postHistory);
+    } catch (error) {
+        next(error);
+    }
+}
+async function getEditedHistoryById(req, res, next) {
+    try {
+        const { id, historyId } = req.params;
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+        const post = await prisma.post.findUnique({
+            where: { id },
+        });
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        if (post.authorId !== userId) {
+            return res.status(403).json({ message: 'Not authorized' });
+        }
+        const history = await prisma.postHistory.findUnique({
+            where: { id: historyId },
+        });
+        if (!history || history.postId !== id) {
+            return res.status(404).json({ message: 'History not found' });
+        }
+        res.json(history);
+    } catch (error) {
+        next(error);
+    }   
+}
 module.exports = {
     getPosts,
     getpostbyid,
@@ -540,5 +600,7 @@ module.exports = {
     checkBookmarkStatus,
     addView,
     getTrendingPosts,
-    getPostsByAuthorId
+    getPostsByAuthorId,
+    getEditedHistory,
+    getEditedHistoryById
 };

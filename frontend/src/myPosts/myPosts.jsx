@@ -1,5 +1,5 @@
 import styles from './myPosts.module.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import api from '../api/axios';
 import { Navigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
@@ -12,9 +12,24 @@ export default function MyPosts({ user }) {
     const [editedContent, setEditedContent] = useState('');
     const [editedCategory, setEditedCategory] = useState('');
     const [editedPicture, setEditedPicture] = useState('');
+    const [editedHistory, setEditedHistory] = useState([]);
     
     const { id } = useParams();
     const navigate = useNavigate();
+
+
+    useEffect(() => {
+        async function fetchEditedHistory() {
+            try {
+                const response = await api.get(`/api/posts/myposts/${id}/history`);
+                setEditedHistory(response.data);
+            } catch (error) {
+                console.error('Error fetching edited history:', error);
+            }
+        }
+        fetchEditedHistory();
+    }, [id]);
+
     
 
     useEffect(() => {
@@ -67,6 +82,9 @@ export default function MyPosts({ user }) {
         } catch (error) {
             console.error('Error updating post:', error);
         }
+    }
+    function handlePostHistoryClick(historyId) {
+        navigate(`/posts/myposts/${id}/history/${historyId}`);
     }
 
 return (
@@ -135,16 +153,28 @@ return (
                         <span>·</span>
                         <span>{new Date(posts.createdAt).toLocaleDateString()}</span>
                         <span>·</span>
-                        <span>{posts.views} views</span>
-                        <span>·</span>
                         <span className={styles.category}>{posts.category}</span>
                     </div>
                     <p>{posts.content}</p>
-                    </>
-                )}
-            </div>
+                    {editedHistory.length > 0 && (
+                        <div className={styles.history}>
+                            <h3>Edited History</h3>
+                            <ul>
+                                {editedHistory.map((edit) => (
+                                    <li key={edit.id} onClick={() => handlePostHistoryClick(edit.id)} className={styles.historyItem}>
+                                        <span>{new Date(edit.createdAt).toLocaleDateString()}</span>
+                                        <span>·</span>
+                                        <span>{edit.title}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                </>
+            )}
         </div>
-           
+    </div>
+       
     )}
     </>
 );

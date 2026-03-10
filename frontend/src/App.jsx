@@ -14,6 +14,7 @@ import Dashboard from './Dashboard/Dashboard';
 import DraftsPage from './draftsPage/draftsPage';
 import MyPosts from './myPosts/myPosts';
 import OtherProfile from './otherProfile/otherProfile';
+import EditedHistoryPage from './EditedHistoryPage/EditedHistoryPage';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -59,6 +60,7 @@ function App() {
         <Route path="/drafts/:id" element={<DraftsPage user={user} />} />
         <Route path="/myposts/:id" element={<MyPosts user={user} />} />
         <Route path="/profile/:id" element={<OtherProfile user={user} />} />
+        <Route path="/posts/myposts/:id/history/:historyId" element={<EditedHistoryPage user={user} />} />
          
        
       </Routes>

@@ -136,8 +136,6 @@ function toggleEdit() {
                     <div className={styles.postDetails}>
                         <span>{new Date(draft.createdAt).toLocaleDateString()}</span>
                         <span>·</span>
-                        <span>{draft.views} views</span>
-                        <span>·</span>
                         <span className={styles.category}>{draft.category}</span>
                     </div>
                     <p>{draft.content}</p>

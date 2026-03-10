@@ -27,6 +27,7 @@ model User {
   bookmarks Bookmark[]
   following Follow[] @relation("UserFollowing")
   followers Follow[] @relation("UserFollowers")
+  postHistory postHistory[]
 }
 model Post {
   id        String   @id @default(cuid())
@@ -42,12 +43,28 @@ model Post {
   author    User     @relation(fields: [authorId], references: [id])
   comments  Comment[]
   bookmarks Bookmark[]
+  postHistory postHistory[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   
 
+}
+model postHistory {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  category  Category?
+  picture   String?
+
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+
+  createdAt DateTime @default(now())
 }
 model Comment {
   id        String   @id @default(cuid())

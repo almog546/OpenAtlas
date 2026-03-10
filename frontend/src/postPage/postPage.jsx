@@ -217,7 +217,7 @@ function handleprofilepostclick(postId) {
                 <h2>More posts by {post.author.name}</h2>
               {postAuthor.map((post) =>(
 
-               <li key={post.id}  className={sts.postItem} onClick={() => handleprofilepostclick(post.id)}>{post.title}</li>
+               <li key={post.id}  className={styles.postItem} onClick={() => handleprofilepostclick(post.id)}>{post.title}</li>
                 ))}
             </div>
             <div className={styles.comments}>

@@ -5,15 +5,17 @@ const { getPosts,getpostbyid,createPosts,getMyPosts,getmypostbyid,deletemyposts,
     replyToComment,getRepliesByCommentId,deleteReply,editReply,
     bookMarkpost,unbookmarkpost,getBookmarkedPosts,checkBookmarkStatus,
     addView,
-    getTrendingPosts
+    getTrendingPosts,
+    getEditedHistory,getEditedHistoryById
  } = require('../controllers/postController');
 
 router.get('/', getPosts);
 router.get('/myposts', getMyPosts);
 router.get('/bookmarks', getBookmarkedPosts);
 router.get('/trending', getTrendingPosts);
-
 router.post('/', createPosts);
+router.get('/myposts/:id/history', getEditedHistory);
+router.get('/myposts/:id/history/:historyId', getEditedHistoryById);
 router.get('/myposts/:id', getmypostbyid);
 router.delete('/myposts/:id', deletemyposts);
 router.put('/myposts/:id', editmyposts);
