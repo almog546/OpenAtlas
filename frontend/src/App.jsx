@@ -59,6 +59,7 @@ function App() {
         <Route path="/drafts/:id" element={<DraftsPage user={user} />} />
         <Route path="/myposts/:id" element={<MyPosts user={user} />} />
         <Route path="/profile/:id" element={<OtherProfile user={user} />} />
+         
        
       </Routes>
       

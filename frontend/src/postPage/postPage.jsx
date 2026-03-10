@@ -21,6 +21,20 @@ export default function PostPage({ user }) {
     const [bookmarked, setBookmarked] = useState(false);
     
 
+    useEffect(() => {
+        async function incrementViews() {
+            try {
+                await api.post(`/api/posts/${id}/views`);
+                // Refetch the post to get updated view count
+                const response = await api.get(`/api/posts/${id}`);
+                setPost(response.data);
+            } catch (err) {
+                console.error('Failed to increment views', err);
+            }
+        }
+        incrementViews();
+    }, [id]);
+
 useEffect(() => {
         async function fetchReplies() {
             try {

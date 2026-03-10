@@ -3,7 +3,8 @@ const router = express.Router();
 const { getPosts,getpostbyid,createPosts,getMyPosts,getmypostbyid,deletemyposts,editmyposts,
     createComment, getCommentsByPostId, deleteComment,editComment,
     replyToComment,getRepliesByCommentId,deleteReply,editReply,
-    bookMarkpost,unbookmarkpost,getBookmarkedPosts,checkBookmarkStatus
+    bookMarkpost,unbookmarkpost,getBookmarkedPosts,checkBookmarkStatus,
+    addView
  } = require('../controllers/postController');
 
 router.get('/', getPosts);
@@ -23,6 +24,7 @@ router.get('/:id/bookmark/check', checkBookmarkStatus);
 router.post('/:id/bookmark', bookMarkpost);
 router.delete('/:id/bookmark', unbookmarkpost);
 router.get('/:id', getpostbyid);
+router.post('/:id/views', addView);
 
 
 

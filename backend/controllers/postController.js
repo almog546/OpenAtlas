@@ -451,6 +451,27 @@ async function checkBookmarkStatus(req, res, next) {
         next(error);
     }
 }
+async function addView(req, res, next) {
+    try {
+        const { id } = req.params;
+        
+        const post = await prisma.post.findUnique({
+            where: { id },
+        });
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        await prisma.post.update({
+            where: { id },
+            data: {
+                views: post.views + 1,
+             },
+        });
+        res.json({ message: 'View added' });
+    } catch (error) {
+        next(error);
+    }
+}
            
         
 
@@ -474,4 +495,5 @@ module.exports = {
     unbookmarkpost,
     getBookmarkedPosts,
     checkBookmarkStatus,
+    addView,
 };
