@@ -4,6 +4,7 @@ import api from '../api/axios';
 import { useParams } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { use } from 'react';
 
 export default function PostPage({ user }) {
     const { id } = useParams();
@@ -19,13 +20,27 @@ export default function PostPage({ user }) {
     const [replyingToCommentId, setReplyingToCommentId] = useState(null);
     const [replies, setReplies] = useState([]);
     const [bookmarked, setBookmarked] = useState(false);
-    
+    const [postAuthor, setPostAuthor] = useState([]);
+
+
+    useEffect(() => {
+        async function fetchPostAuthor() {
+            try {
+                const response = await api.get(`/api/posts/author/${post.authorId}`);
+                setPostAuthor(response.data);
+            } catch (err) {
+                console.error('Failed to fetch post author', err);
+            }
+        }
+        if (post) {
+            fetchPostAuthor();
+        }
+    }, [post]);
 
     useEffect(() => {
         async function incrementViews() {
             try {
                 await api.post(`/api/posts/${id}/views`);
-                // Refetch the post to get updated view count
                 const response = await api.get(`/api/posts/${id}`);
                 setPost(response.data);
             } catch (err) {
@@ -163,6 +178,11 @@ async function handleBookmark() {
         console.error('Failed to toggle bookmark', err);
     }
 }
+function handleprofilepostclick(postId) {
+        navigate(`/posts/${postId}`);
+    }
+
+
 
 
 
@@ -190,7 +210,16 @@ async function handleBookmark() {
             
           
             </div>
+            <div className={styles.content}>
             <p>{post.content}</p>
+            </div>
+            <div className={styles.authorPosts}>
+                <h2>More posts by {post.author.name}</h2>
+              {postAuthor.map((post) =>(
+
+               <li key={post.id}  className={sts.postItem} onClick={() => handleprofilepostclick(post.id)}>{post.title}</li>
+                ))}
+            </div>
             <div className={styles.comments}>
                 <h2>Comments</h2>
                 <textarea

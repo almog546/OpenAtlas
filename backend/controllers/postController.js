@@ -497,6 +497,26 @@ async function getTrendingPosts(req, res, next) {
         next(error);
     }
 }
+async function getPostsByAuthorId(req, res, next) {
+    try {
+        const { authorId } = req.params;
+        const posts = await prisma.post.findMany({
+            where: { authorId },
+            include: {
+                author: {
+                    include: {
+                        profile: true,
+                    },
+                },
+            },
+        });
+        res.json(posts);
+    }
+        catch (error) {
+        next(error);
+    }
+}
+
 
 module.exports = {
     getPosts,
@@ -520,4 +540,5 @@ module.exports = {
     checkBookmarkStatus,
     addView,
     getTrendingPosts,
+    getPostsByAuthorId
 };

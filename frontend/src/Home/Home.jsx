@@ -10,6 +10,8 @@ export default function Home() {
     const [postorder, setPostorder] = useState('');
     const [search, setSearch] = useState("");
     const [trendingPosts, setTrendingPosts] = useState([]);
+   
+
 
     useEffect(() => {
         async function fetchPosts() {

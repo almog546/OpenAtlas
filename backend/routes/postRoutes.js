@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getPosts,getpostbyid,createPosts,getMyPosts,getmypostbyid,deletemyposts,editmyposts,
+const { getPosts,getpostbyid,createPosts,getMyPosts,getmypostbyid,deletemyposts,editmyposts,getPostsByAuthorId,
     createComment, getCommentsByPostId, deleteComment,editComment,
     replyToComment,getRepliesByCommentId,deleteReply,editReply,
     bookMarkpost,unbookmarkpost,getBookmarkedPosts,checkBookmarkStatus,
@@ -12,6 +12,7 @@ router.get('/', getPosts);
 router.get('/myposts', getMyPosts);
 router.get('/bookmarks', getBookmarkedPosts);
 router.get('/trending', getTrendingPosts);
+
 router.post('/', createPosts);
 router.get('/myposts/:id', getmypostbyid);
 router.delete('/myposts/:id', deletemyposts);
@@ -26,6 +27,7 @@ router.get('/:id/bookmark/check', checkBookmarkStatus);
 router.post('/:id/bookmark', bookMarkpost);
 router.delete('/:id/bookmark', unbookmarkpost);
 router.get('/:id', getpostbyid);
+router.get('/author/:authorId', getPostsByAuthorId);
 router.post('/:id/views', addView);
 
 
