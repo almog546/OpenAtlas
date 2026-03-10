@@ -4,12 +4,14 @@ const { getPosts,getpostbyid,createPosts,getMyPosts,getmypostbyid,deletemyposts,
     createComment, getCommentsByPostId, deleteComment,editComment,
     replyToComment,getRepliesByCommentId,deleteReply,editReply,
     bookMarkpost,unbookmarkpost,getBookmarkedPosts,checkBookmarkStatus,
-    addView
+    addView,
+    getTrendingPosts
  } = require('../controllers/postController');
 
 router.get('/', getPosts);
 router.get('/myposts', getMyPosts);
 router.get('/bookmarks', getBookmarkedPosts);
+router.get('/trending', getTrendingPosts);
 router.post('/', createPosts);
 router.get('/myposts/:id', getmypostbyid);
 router.delete('/myposts/:id', deletemyposts);

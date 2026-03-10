@@ -8,8 +8,22 @@ import { CiSearch } from "react-icons/ci";
 export default function Home() {
     const [posts, setPosts] = useState([]);
     const [postorder, setPostorder] = useState('');
-      const [search, setSearch] = useState("");
-      const [selectedCategory, setSelectedCategory] = useState("");
+    const [search, setSearch] = useState("");
+    const [trendingPosts, setTrendingPosts] = useState([]);
+
+    useEffect(() => {
+        async function fetchPosts() {
+            try {
+                const response = await api.get('/api/posts/trending');
+                setTrendingPosts(response.data);
+            }
+            catch (err) {
+                console.error('Failed to fetch trending posts', err);
+            }
+        }
+        fetchPosts();
+    }, []);
+
 
 
 
@@ -41,7 +55,7 @@ export default function Home() {
    function handlePostClick(id) {
         window.location.href = `/posts/${id}`;
     }
-    
+
     function sortPostsnew() {
         setPostorder('newest');
         setPosts([...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
@@ -50,6 +64,10 @@ export default function Home() {
     function sortPostsold() {
         setPostorder('oldest');
         setPosts([...posts].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)));
+    }
+    function sortPostsTrending() {
+        setPostorder('trending');
+        setPosts(trendingPosts);
     }
 
 
@@ -92,6 +110,12 @@ export default function Home() {
         className={`${styles.sortBtn} ${postorder === 'oldest' ? styles.active : ''}`}
     >
         Oldest
+    </button>
+    <button 
+        onClick={() => sortPostsTrending()} 
+        className={`${styles.sortBtn} ${postorder === 'trending' ? styles.active : ''}`}
+    >
+        Trending
     </button>
 </div>
     </div>

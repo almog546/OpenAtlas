@@ -472,8 +472,31 @@ async function addView(req, res, next) {
         next(error);
     }
 }
-           
-        
+async function getTrendingPosts(req, res, next) {
+    try {
+         const fourDaysAgo = new Date(Date.now() - 1000 * 60 * 60 * 24 * 4);
+        const trendingPosts = await prisma.post.findMany({
+            where: {
+                createdAt: {
+                    gte: fourDaysAgo,
+                },
+            },
+            orderBy: {
+                views: 'desc',
+            },
+            include: {
+                author: {
+                    include: {
+                        profile: true,
+                    },
+                },
+            },
+        });
+        res.json(trendingPosts);
+    } catch (error) {
+        next(error);
+    }
+}
 
 module.exports = {
     getPosts,
@@ -496,4 +519,5 @@ module.exports = {
     getBookmarkedPosts,
     checkBookmarkStatus,
     addView,
+    getTrendingPosts,
 };
