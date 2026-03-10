@@ -356,8 +356,18 @@ async function bookMarkpost(req, res, next) {
         const post = await prisma.post.findUnique({
             where: { id },
         });
+        
         if (!post) {
             return res.status(404).json({ message: 'Post not found' });
+        }
+        const existingBookmark = await prisma.bookmark.findFirst({
+            where: {
+                userId,
+                postId: id,
+            },
+        });
+        if (existingBookmark) {
+            return res.status(400).json({ message: 'Post already bookmarked' });
         }
         await prisma.bookmark.create({
             data: {
