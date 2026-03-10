@@ -117,6 +117,26 @@ async function getFollowing(req, res, next) {
         next(error);
     }
 }
+async function checkIfFollowing(req, res, next) {
+    try {
+        const userId = req.session.userId;
+        const followingId = req.params.id;
+        if (!userId) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+        const existingFollow = await prisma.follow.findUnique({
+            where: {
+                followerId_followingId: {
+                    followerId: userId,
+                    followingId,
+                },
+            },        });
+        res.json({ isFollowing: !!existingFollow });
+    } catch (error) {     
+           next(error);
+    }
+}
+
 
 
 
@@ -126,4 +146,5 @@ module.exports = {
     unfollowUser,
     getFollowers,
     getFollowing,
+    checkIfFollowing,
 };

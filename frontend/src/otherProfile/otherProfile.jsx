@@ -10,6 +10,20 @@ export default function OtherProfile({ user }) {
     const [profilePosts, setProfilePosts] = useState([]);
     const { id } = useParams();
     const navigate = useNavigate();
+    const [isFollowing, setIsFollowing] = useState(false);
+
+
+    useEffect(() => {
+        async function checkIfFollowing() {
+            try {
+                const response = await api.get(`/api/follow/check-following/${id}`);
+                setIsFollowing(response.data.isFollowing);
+            } catch (err) {
+                console.error('Failed to check if following', err);
+            }
+        }
+        checkIfFollowing();
+    }, [id]);
 
     useEffect(() => {
         async function fetchProfile() {
@@ -47,6 +61,24 @@ export default function OtherProfile({ user }) {
     function handleprofilepostclick(postId) {
         navigate(`/posts/${postId}`);
     }
+    async function handleFollow() {
+        try {
+            await api.post(`/api/follow/follow/${id}`);
+           
+            setIsFollowing(true);
+        } catch (err) {
+            console.error('Failed to follow user', err);
+        }
+    }
+    async function handleUnfollow() {
+        try {
+            await api.delete(`/api/follow/unfollow/${id}`);
+           
+            setIsFollowing(false);
+        } catch (err) {
+            console.error('Failed to unfollow user', err);
+        }
+    }
 
 
   return (
@@ -56,9 +88,19 @@ export default function OtherProfile({ user }) {
             <p className={styles.noProfile}>No profile found.</p>
         ) : (
 <>
-        <h1>{profile.user.name}'s Profile</h1>
+     
         <div className={styles.profileInfo}>
+            <div className={styles.avatarContainer}>
             <img src={profile.avatar || profile.user.name.charAt(0).toUpperCase()} alt="Avatar" className={styles.avatar} />
+            <div className={styles.userName}>{profile.user.name}</div>
+            </div>
+            <div className={styles.follow}>
+                {isFollowing ? (
+                    <button className={styles.followButton} onClick={handleUnfollow}>Unfollow</button>
+                ) : (
+                    <button className={styles.followButton} onClick={handleFollow}>Follow</button>
+                )}
+            </div>
         </div>
         <div className={styles.bio}>
             <h2>Bio</h2>

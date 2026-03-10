@@ -29,10 +29,39 @@
 .profileInfo {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 1.75rem;
     background-color: var(--bg-main);
     border: 1px solid var(--border);
     border-radius: 16px;
+    gap: 2rem;
+}
+
+.avatarContainer {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.follow {
+    display: flex;
+    flex-shrink: 0;
+}
+
+.followButton {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.15s;
+}
+
+.followButton:hover {
+    transform: translateY(-1px);
 }
 
 .avatar {
@@ -42,6 +71,13 @@
     object-fit: cover;
     border: 3px solid var(--bg-subtle);
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.userName {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.02em;
 }
 
 
@@ -154,15 +190,8 @@
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
 }
-.avatar {
-    width: 88px;
-    height: 88px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid var(--bg-subtle);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    margin-right: 1rem;
-}
+
+
 
 @keyframes spin {
     to { transform: rotate(360deg); }
