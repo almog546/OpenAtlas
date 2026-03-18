@@ -30,6 +30,7 @@ app.use('/api/posts', require('./routes/postRoutes'));
 app.use('/api/drafts', require('./routes/draftRoutes'));
 app.use('/api/profile', require('./routes/profileRoutes'));
 app.use('/api/follow', require('./routes/followRoutes'));
+app.use('/api/notifications', require('./routes/notificationRoutes'));
 
 
 
