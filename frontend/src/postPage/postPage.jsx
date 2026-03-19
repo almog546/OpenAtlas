@@ -21,6 +21,9 @@ export default function PostPage({ user }) {
     const [replies, setReplies] = useState([]);
     const [bookmarked, setBookmarked] = useState(false);
     const [postAuthor, setPostAuthor] = useState([]);
+    const [openreport, setOpenReport] = useState(false);
+    const [reportReason, setReportReason] = useState('');
+    const [reportSubmitted, setReportSubmitted] = useState(false);
 
 
     useEffect(() => {
@@ -181,6 +184,25 @@ async function handleBookmark() {
 function handleprofilepostclick(postId) {
         navigate(`/posts/${postId}`);
     }
+    function toggleReport() {
+        setOpenReport(true);
+    }
+    function closeReport() {
+        setOpenReport(false);
+    }
+    async function handleReport() {
+        try {
+            await api.post(`/api/report/post`, { postId: id, reason: reportReason });
+            setReportSubmitted(true);
+            setReportReason('');
+            closeReport();
+        } catch (err) {
+            console.error('Failed to submit report', err);
+        }
+    }
+
+
+           
 
 
 
@@ -203,10 +225,27 @@ function handleprofilepostclick(postId) {
                 <span>·</span>
                 <span className={styles.category}>{post.category}</span>
                 {user && (
+                    <>
                     <button onClick={handleBookmark} className={styles.bookmarkButton}>
                         {bookmarked ? 'Unbookmark' : 'Bookmark'}
                     </button>
-                )}
+                    <button className={styles.reportButton} onClick={toggleReport}>Report</button>
+                    {openreport && (
+                        <div className={styles.reportModal}>
+                            <div className={styles.reportContent}>
+                                <h2>Report Post</h2>
+                                <textarea
+                                    value={reportReason}
+                                    onChange={(e) => setReportReason(e.target.value)}
+                                    placeholder="Reason for reporting"
+                                    className={styles.reportInput}
+                                ></textarea>
+                                <button className={styles.reportSubmitButton} onClick={handleReport}>Submit Report</button>
+                                <button className={styles.reportCancelButton} onClick={closeReport}>Cancel</button>
+                            </div>
+                        </div>
+                     )}
+                </>)}
             
           
             </div>

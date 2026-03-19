@@ -196,6 +196,7 @@ model report {
   commentId String?
   comment   Comment? @relation(fields: [commentId], references: [id])
   reason    String
+  type      String   @default("POST")
   status    String   @default("OPEN")
   createdAt DateTime @default(now())
 }

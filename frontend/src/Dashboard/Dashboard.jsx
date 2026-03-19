@@ -16,9 +16,23 @@ export default function Dashboard({ user }) {
     const [followingAuthors, setFollowingAuthors] = useState([]);
     const [AuthorsFollowers, setAuthorsFollowers] = useState([]);
     const [followersCount, setFollowersCount] = useState(0);
+    const [reports, setReports] = useState([]);
 
 
 
+    useEffect(() => {
+        async function fetchReports() {
+            try {
+                const response = await api.get('/api/report');
+                setReports(response.data);
+            }
+            catch (err) {
+                console.error('Failed to fetch reports', err);
+            }
+        }
+        fetchReports();
+    }, []);
+ 
 
     useEffect(() => {
         async function fetchAuthorsFollowers() {
@@ -317,6 +331,44 @@ async function updateProfile() {
         )}
     </div>
 )}
+{toggleMenu === 'AdminPanel' && (
+    <div className={styles.content}>
+        <h1>Admin Panel</h1>
+        {reports.length === 0 ? (
+            <p>No reports found. Great job keeping the community safe!</p>
+        ) : (
+            <>
+            {reports.map(report => (
+                <div key={report.id} className={styles.report}>
+                     {report.type === 'POST' && (    <>      
+                     <div className={styles.reportDetails}>         
+                    <h3>Reported by: {report.reporter.name}</h3>
+                    <p>Reason: {report.reason}</p>
+                    <p>Type: {report.type}</p>                  
+                    <p>Post title: {report.post?.title}</p>
+                    <p>Post author: {report.post?.author?.name}</p>
+                    <p>Date: {new Date(report.createdAt).toLocaleDateString()}</p>
+                   </div></>
+                    )}
+                    {report.type === 'COMMENT' && (                      
+                    <>
+                    <div className={styles.reportDetails}>
+                    <h3>Reported by: {report.reporter.name}</h3>
+                    <p>Reason: {report.reason}</p>
+                    <p>Type: {report.type}</p>                  
+                    <p>Comment content: {report.comment?.content}</p>
+                    <p>Date: {new Date(report.createdAt).toLocaleDateString()}</p>
+                    </div>
+                    </>
+                    )}
+                </div>
+            ))
+            }
+            </>
+        )}
+    </div>
+)}
+
         </>
     )}
     </>);

@@ -12,6 +12,7 @@ async function createReportPost(req, res, next) {
                 postId,
                 reporterId: userId,
                 reason,
+                type: 'POST',
             },
         });
         res.status(201).json(report);
@@ -30,7 +31,8 @@ async function createReportComment(req, res, next) {
             data: {
                 commentId,
                 reporterId: userId,
-                reason,
+                type: 'COMMENT',
+                reason,    
             },
         });
         res.status(201).json(report);
@@ -44,7 +46,16 @@ async function getReports(req, res, next) {
         if (!userId) {
             return res.status(401).json({ message: 'Not authenticated' });
         }
-        const reports = await prisma.report.findMany();
+        const reports = await prisma.report.findMany(
+            {
+                where: { status: 'OPEN' },
+                include: {
+                    post: true,
+                    comment: true,
+                    reporter: true,
+                },
+            }
+        );
         res.status(200).json(reports);
     } catch (error) {
         next(error);
