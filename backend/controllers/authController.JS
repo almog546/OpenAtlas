@@ -65,6 +65,7 @@ async function login(req, res, next) {
                 id: user.id,
                 username: user.username,
                 name: user.name,
+                role: user.role,
             }
         );
     } catch (error) {
@@ -89,6 +90,7 @@ async function me(req, res, next) {
                 id: user.id,
                 username: user.username,
                 name: user.name,
+                role: user.role,
             }
         );
     }

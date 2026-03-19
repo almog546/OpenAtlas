@@ -138,9 +138,11 @@ async function updateProfile() {
         <Navigate to="/login" replace />
     ) : (
         <>
+        
         <div className={styles.container}>
               <h2>Dashboard</h2>
                         <ul className={styles.dashboard}>
+                            {user.role === 'ADMIN' && <li className={styles.dashboardItem} onClick={() => handleToggleMenu('AdminPanel')}> Admin Panel </li>}
                             <li className={styles.dashboardItem} onClick={() => handleToggleMenu('MyArticles')}> My Articles </li>
                             <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Drafts')}> Drafts </li>
                             <Link to="/newpost" className={styles.dashboardItem}>Write Article</Link>

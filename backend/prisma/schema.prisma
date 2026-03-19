@@ -30,6 +30,7 @@ model User {
   postHistory postHistory[]
   notifications Notification[] @relation("UserNotifications")
   actorNotifications Notification[] @relation("ActorNotifications")
+  role      userRole   @default(USER)
 }
 model Post {
   id        String   @id @default(cuid())
@@ -178,6 +179,10 @@ enum Category {
   sports
   entertainment
   books
+}
+enum userRole {
+  USER
+  ADMIN
 }
 
 
