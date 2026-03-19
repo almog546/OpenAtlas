@@ -217,6 +217,16 @@ function handleprofilepostclick(postId) {
             console.error('Failed to submit comment report', err);
         }
     }
+    async function handleAdminDelete() {
+        try {
+            await api.delete(`/api/posts/admin/${id}`);
+            
+            navigate('/home');
+        } catch (err) {
+            console.error('Failed to delete post', err);
+            
+        }
+    }
 
            
 
@@ -230,6 +240,7 @@ function handleprofilepostclick(postId) {
         <>
          
             <> 
+           
         <div className={styles.container}>
             <h1>{post.title}</h1>
             <div className={styles.postDetails}>
@@ -246,6 +257,7 @@ function handleprofilepostclick(postId) {
                         {bookmarked ? 'Unbookmark' : 'Bookmark'}
                     </button>
                     <button className={styles.reportButton} onClick={toggleReport}>Report</button>
+                        {user.role === 'ADMIN' && <button className={styles.deleteButton} onClick={handleAdminDelete}>Delete Post</button>}
                     {openreport && (
                         <div className={styles.reportModal}>
                             <div className={styles.reportContent}>

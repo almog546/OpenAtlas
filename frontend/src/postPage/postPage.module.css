@@ -298,6 +298,21 @@
 .reportCancelButton:hover {
     background: var(--border-strong);
 }
+.deleteButton {
+    background: var(--danger);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+.deleteButton:hover {
+    background: rgb(255, 125, 125);
+}
+
 
 @keyframes spin {
     to { transform: rotate(360deg); }
@@ -308,5 +323,6 @@
     .postDetails { flex-wrap: wrap; }
     .bookmarkButton { width: 100%; margin-top: 12px; }
     .reportButton { width: 100%; margin-top: 12px; }
+    .adminDeleteButton { width: 100%; margin-top: 12px; }
     .comment p, .commentReply { margin-left: 0; margin-top: 12px; }
 }

@@ -6,7 +6,8 @@ const { getPosts,getpostbyid,createPosts,getMyPosts,getmypostbyid,deletemyposts,
     bookMarkpost,unbookmarkpost,getBookmarkedPosts,checkBookmarkStatus,
     addView,
     getTrendingPosts,
-    getEditedHistory,getEditedHistoryById
+    getEditedHistory,getEditedHistoryById,
+    adminDeletePost
  } = require('../controllers/postController');
 
 router.get('/', getPosts);
@@ -31,6 +32,7 @@ router.delete('/:id/bookmark', unbookmarkpost);
 router.get('/:id', getpostbyid);
 router.get('/author/:authorId', getPostsByAuthorId);
 router.post('/:id/views', addView);
+router.delete('/admin/:id', adminDeletePost);
 
 
 

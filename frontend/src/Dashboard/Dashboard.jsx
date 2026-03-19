@@ -17,6 +17,7 @@ export default function Dashboard({ user }) {
     const [AuthorsFollowers, setAuthorsFollowers] = useState([]);
     const [followersCount, setFollowersCount] = useState(0);
     const [reports, setReports] = useState([]);
+    const [reportResloved, setReportResolved] = useState(false);
 
 
 
@@ -142,6 +143,16 @@ async function updateProfile() {
         console.error('Failed to update profile', err);
     }
 }
+async function handleToggleReportStatus(reportId, status) {
+    try {
+        await api.put(`/api/report/${reportId}/resolve`, 
+            { status });
+        setReportResolved(true);
+    } catch (err) {
+        console.error('Failed to update report status', err);
+    }
+}
+
 
 
 
@@ -341,22 +352,50 @@ async function updateProfile() {
             {reports.map(report => (
                 <div key={report.id} className={styles.report}>
                      {report.type === 'POST' && (    <>      
-                     <div className={styles.reportDetails}>         
+                     <div className={styles.reportDetails}>
+                        <div className={styles.reportHeader}>        
                     <h3>Reported by: {report.reporter.name}</h3>
+                    <button onClick={() => handleToggleReportStatus(report.id, 'RESOLVED')} className={styles.resolveButton}>Resolve</button>
+                    </div> 
                     <p>Reason: {report.reason}</p>
                     <p>Type: {report.type}</p>                  
                     <p>Post title: {report.post?.title}</p>
                     <p>Date: {new Date(report.createdAt).toLocaleDateString()}</p>
-                   </div></>
+                     {report.status === 'OPEN' && (
+                        <div className={styles.reportActions}>
+                            <p>Report is open</p>
+                            </div>
+                    )}
+                    {report.status === 'RESOLVED' && (
+                        <div className={styles.closedReport}>
+                            <p>Report closed</p>
+                        </div>
+                    )}
+                    </div>
+                    </>
+            
                     )}
                     {report.type === 'COMMENT' && (                      
                     <>
                     <div className={styles.reportDetails}>
+                     <div className={styles.reportHeadera}>        
                     <h3>Reported by: {report.reporter.name}</h3>
+                    <button onClick={() => handleToggleReportStatus(report.id, 'RESOLVED')} className={styles.resolveButton}>Resolve</button>
+                    </div> 
                     <p>Reason: {report.reason}</p>
                     <p>Type: {report.type}</p>                  
                     <p>Comment content: {report.comment?.content}</p>
                     <p>Date: {new Date(report.createdAt).toLocaleDateString()}</p>
+                     {report.status === 'OPEN' && (
+                        <div className={styles.reportActions}>
+                            <p>Report is open</p>
+                            </div>
+                    )}
+                    {report.status === 'RESOLVED' && (
+                        <div className={styles.closedReport}>
+                            <p>Report closed</p>
+                        </div>
+                    )}
                     </div>
                     </>
                     )}

@@ -78,7 +78,7 @@ model Comment {
   authorId    String
   author      User     @relation(fields: [authorId], references: [id])
   postId    String
-  post      Post     @relation(fields: [postId], references: [id])
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   replies    reply[]
   Notification Notification[] 
@@ -120,7 +120,7 @@ model Bookmark {
   userId    String
   postId    String
   user      User     @relation(fields: [userId], references: [id])
-  post      Post     @relation(fields: [postId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 
    @@unique([userId, postId])

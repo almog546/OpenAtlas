@@ -409,6 +409,107 @@
 }
 
 
+.content h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.02em;
+    margin-bottom: 1.75rem;
+}
+
+.report {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.report:hover {
+    border-color: var(--border-strong);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.reportDetails {
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.reportDetails h3 {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0 0 0.25rem;
+}
+
+.reportDetails p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.reportDetails p:first-of-type {
+    color: var(--danger);
+    font-weight: 600;
+}
+
+.reportDetails p:last-of-type {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    margin-top: 0.25rem;
+}
+.reportActions {
+    padding: 0.75rem 1.5rem;
+    background-color: #fef2f2;
+    border-top: 1px solid #fecaca;
+}
+
+.reportActions p {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--danger);
+    margin: 0;
+}
+
+.closedReport {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--bg-muted);
+    border-top: 1px solid var(--border);
+}
+
+.closedReport p {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin: 0;
+}
+.reportHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.resolveButton {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    background-color: var(--success);
+    color: #ffffff;
+    transition: background-color 0.15s, transform 0.1s;
+}
+.resolveButton:hover {
+    background-color: #15803d;
+}
+
+
+
+
+
 @media (max-width: 768px) {
     .Followerscontent {
         padding: 40px 20px;

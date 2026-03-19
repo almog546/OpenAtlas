@@ -595,6 +595,34 @@ async function getEditedHistoryById(req, res, next) {
         next(error);
     }   
 }
+async function adminDeletePost(req, res, next) {
+    try {
+        const { id } = req.params;
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+        });
+        if (!user || user.role !== 'ADMIN') {
+            return res.status(403).json({ message: 'Forbidden' });
+        }
+        const post = await prisma.post.findUnique({
+            where: { id },
+        });
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        await prisma.post.delete({
+            where: { id },
+        });
+        res.status(204).end();
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     getPosts,
     getpostbyid,
@@ -619,5 +647,6 @@ module.exports = {
     getTrendingPosts,
     getPostsByAuthorId,
     getEditedHistory,
-    getEditedHistoryById
+    getEditedHistoryById,
+    adminDeletePost
 };
