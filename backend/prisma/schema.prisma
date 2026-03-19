@@ -31,6 +31,7 @@ model User {
   notifications Notification[] @relation("UserNotifications")
   actorNotifications Notification[] @relation("ActorNotifications")
   role      userRole   @default(USER)
+  reports   report[]
 }
 model Post {
   id        String   @id @default(cuid())
@@ -48,6 +49,7 @@ model Post {
   bookmarks Bookmark[]
   postHistory postHistory[]
   notifications Notification[]
+  reports   report[]
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -80,6 +82,7 @@ model Comment {
   createdAt DateTime @default(now())
   replies    reply[]
   Notification Notification[] 
+  reports   report[]
 }
 model reply {
   id        String   @id @default(cuid())
@@ -183,6 +186,18 @@ enum Category {
 enum userRole {
   USER
   ADMIN
+}
+model report {
+  id        String   @id @default(cuid())
+  reporterId String
+  reporter   User     @relation(fields: [reporterId], references: [id])
+  postId    String?
+  post      Post?    @relation(fields: [postId], references: [id])
+  commentId String?
+  comment   Comment? @relation(fields: [commentId], references: [id])
+  reason    String
+  status    String   @default("OPEN")
+  createdAt DateTime @default(now())
 }
 
 

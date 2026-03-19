@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Dashboard({ user }) {
-    const [toggleMenu, setToggleMenu] = useState('MyArticles');
+    const [toggleMenu, setToggleMenu] = useState('');
     const [content, setContent] = useState([]);
     const [drafts, setDrafts] = useState([]);  
     const [profile, setProfile] = useState(null);
@@ -142,15 +142,23 @@ async function updateProfile() {
         <div className={styles.container}>
               <h2>Dashboard</h2>
                         <ul className={styles.dashboard}>
-                            {user.role === 'ADMIN' && <li className={styles.dashboardItem} onClick={() => handleToggleMenu('AdminPanel')}> Admin Panel </li>}
-                            <li className={styles.dashboardItem} onClick={() => handleToggleMenu('MyArticles')}> My Articles </li>
-                            <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Drafts')}> Drafts </li>
-                            <Link to="/newpost" className={styles.dashboardItem}>Write Article</Link>
-                            <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Profile')}>Profile</li>
-                             <li className={styles.dashboardItem} onClick={() => handleToggleMenu('SavedArticles')}>Saved Articles</li>
-                              <li className={styles.dashboardItem} onClick={() => handleToggleMenu('FollowingAuthors')}>Following </li>
-                             <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Followers')}>Followers </li> 
-                            </ul>
+                            {user.role === 'ADMIN' ? (<li className={styles.dashboardItem} onClick={() => handleToggleMenu('AdminPanel')}> Admin Panel </li>) : (
+                                <>
+                                <li className={styles.dashboardItem} onClick={() => handleToggleMenu('MyArticles')}> My Articles </li>
+                                <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Drafts')}> Drafts </li>
+                                <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Profile')}> Profile </li>
+                                <li className={styles.dashboardItem} onClick={() => handleToggleMenu('SavedArticles')}> Saved Articles </li>
+                                <li className={styles.dashboardItem} onClick={() => handleToggleMenu('FollowingAuthors')}> Following  </li>
+                                <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Followers')}> Followers </li>
+                                 <Link to="/newpost" className={styles.dashboardItem}>Write Article</Link>
+                                </>
+                            )}
+                        </ul>
+                         
+
+
+                          
+                           
             
         </div>
         {toggleMenu === 'MyArticles' && 
