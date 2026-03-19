@@ -24,6 +24,8 @@ export default function PostPage({ user }) {
     const [openreport, setOpenReport] = useState(false);
     const [reportReason, setReportReason] = useState('');
     const [reportSubmitted, setReportSubmitted] = useState(false);
+    const [reportingCommentId, setReportingCommentId] = useState(null);
+    const [openCommentReport, setOpenCommentReport] = useState(false);
 
 
     useEffect(() => {
@@ -190,7 +192,7 @@ function handleprofilepostclick(postId) {
     function closeReport() {
         setOpenReport(false);
     }
-    async function handleReport() {
+    async function handlePostReport() {
         try {
             await api.post(`/api/report/post`, { postId: id, reason: reportReason });
             setReportSubmitted(true);
@@ -200,7 +202,21 @@ function handleprofilepostclick(postId) {
             console.error('Failed to submit report', err);
         }
     }
-
+    function toggleCommentReport(id) {
+        setOpenCommentReport(true);
+        setReportingCommentId(id);
+    }
+    async function handleCommentReport() {
+        try {
+            await api.post(`/api/report/comment`, { commentId: reportingCommentId, reason: reportReason });
+            setReportSubmitted(true);
+            setReportReason('');
+            setReportingCommentId(null);
+            setOpenCommentReport(false);
+        } catch (err) {
+            console.error('Failed to submit comment report', err);
+        }
+    }
 
            
 
@@ -240,7 +256,7 @@ function handleprofilepostclick(postId) {
                                     placeholder="Reason for reporting"
                                     className={styles.reportInput}
                                 ></textarea>
-                                <button className={styles.reportSubmitButton} onClick={handleReport}>Submit Report</button>
+                                <button className={styles.reportSubmitButton} onClick={handlePostReport}>Submit Report</button>
                                 <button className={styles.reportCancelButton} onClick={closeReport}>Cancel</button>
                             </div>
                         </div>
@@ -303,6 +319,22 @@ function handleprofilepostclick(postId) {
                                 {user && (<>
                                 {!replyToggle &&(
                                       <button className={styles.commentButton} onClick={() => { setReplyToggle(true); setReplyingToCommentId(comment.id); }}>Reply</button>
+                                )}
+                                <button className={styles.reportButton} onClick={() => toggleCommentReport(comment.id)}>Report</button>
+                                {openCommentReport && reportingCommentId === comment.id && (
+                                    <div className={styles.reportModal}>
+                                        <div className={styles.reportContent}>
+                                            <h2>Report Comment</h2>
+                                            <textarea
+                                                value={reportReason}
+                                                onChange={(e) => setReportReason(e.target.value)}
+                                                placeholder="Reason for reporting"
+                                                className={styles.reportInput}
+                                            ></textarea>
+                                            <button className={styles.reportSubmitButton} onClick={handleCommentReport}>Submit Report</button>
+                                            <button className={styles.reportCancelButton} onClick={() => setOpenCommentReport(false)}>Cancel</button>
+                                        </div>
+                                    </div>
                                 )}
                                </>)}
                               

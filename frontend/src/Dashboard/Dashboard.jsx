@@ -346,7 +346,6 @@ async function updateProfile() {
                     <p>Reason: {report.reason}</p>
                     <p>Type: {report.type}</p>                  
                     <p>Post title: {report.post?.title}</p>
-                    <p>Post author: {report.post?.author?.name}</p>
                     <p>Date: {new Date(report.createdAt).toLocaleDateString()}</p>
                    </div></>
                     )}
