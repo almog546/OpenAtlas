@@ -21,8 +21,24 @@ import Notification from './notification/notification';
 function App() {
   const [user, setUser] = useState(null);
   const [logout, setLogout] = useState(false);
+    const [notifications, setNotifications] = useState([]);
    const navigate = useNavigate();
     const location = useLocation();
+
+useEffect(() => {
+    async function fetchNotifications() {
+        try {
+           const { data } = await api.get('/api/notifications');
+           setNotifications(data);
+        }
+        catch (err) {
+            console.error('Failed to fetch notifications', err);
+        }
+    }
+    fetchNotifications();
+   }, []);
+
+
   useEffect(() => {
     async function fetchUser() {
       try {
@@ -51,7 +67,7 @@ function App() {
 
   return (
     <>
-      {!hideNavbar && <Navbar user={user} onLogout={onLogout} />}
+      {!hideNavbar && <Navbar user={user} onLogout={onLogout} notifications={notifications} />}
       <Routes>
         <Route path="/signup" element={<Signup user={user} />} />
         <Route path="/login" element={<Login user={user} />} />

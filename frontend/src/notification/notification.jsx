@@ -2,9 +2,12 @@ import styles from './notification.module.css';
 import { useEffect, useState } from 'react';
 import api from '../api/axios';
 
+
 export default function Notification() {
    const [notifications, setNotifications] = useState([]);
    const [markedAsRead, setMarkedAsRead] = useState(false);
+   const [markedOneAsRead, setMarkedOneAsRead] = useState(false);
+   
    useEffect(() => {
     async function fetchNotifications() {
         try {
@@ -26,7 +29,8 @@ export default function Notification() {
     }
 }
 
-    return (
+    return (<>
+   
         <div className={styles.container}>
             <h1>Notifications</h1>
             {notifications.length === 0 ? (
@@ -47,6 +51,7 @@ export default function Notification() {
                             {notification.type === 'comment' && <p> {notification.post?.title}</p>}
                             <span className={styles.timestamp}>{new Date(notification.createdAt).toLocaleString()}</span>
                             {notification.isRead === false ? <div className={styles.unreadIndicator}></div> : <div className={styles.readIndicator}></div>}
+                            
 
                         
                     
@@ -55,5 +60,5 @@ export default function Notification() {
                 </ul>
             </>)}
         </div>
-    );
+  </>  );
 }

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { IoIosNotifications } from "react-icons/io";
 
 
-export default function Navbar({ user, onLogout }) {
+export default function Navbar({ user, onLogout, notifications }) {
     const [toggleMenu, setToggleMenu] = useState(false);
     
    
@@ -26,7 +26,15 @@ export default function Navbar({ user, onLogout }) {
             ) : (<>
             <div className={styles.userSection}>
                 <span className={styles.userName} onClick={handleToggleMenu}> <UserCircle size={30} strokeWidth={1.5} color="var(--primary)" /></span>
-                 <Link to="/notifications" className={styles.notifications}><IoIosNotifications size={30} color='black' /></Link>
+                {notifications.length > 0 && notifications.some(n => !n.isRead) ? (
+                    <Link to="/notifications" className={styles.notifications}>
+                        <IoIosNotifications size={30} color='black' />
+                        <span className={styles.notificationCount}>{notifications.filter(n => !n.isRead).length}</span>
+                    </Link>
+                ) : 
+                <Link to="/notifications" className={styles.notifications}><IoIosNotifications size={30} color='black' /></Link>
+                }
+                 
                </div>
 
                     {toggleMenu && ( 

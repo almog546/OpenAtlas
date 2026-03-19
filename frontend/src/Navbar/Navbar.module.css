@@ -128,7 +128,26 @@
     align-items: center;
     color: inherit;
     text-decoration: none;
+    position: relative;
 }
+.notificationCount {
+    position: absolute;
+    top: -4px;
+    right: -8px;
+    background-color: var(--danger);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 99px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bg-main);
+}
+
 @media (max-width: 600px) {
     .navbar {
         padding: 0 1rem;
