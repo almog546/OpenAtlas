@@ -169,6 +169,10 @@ async function createComment(req, res, next) {
         if (!content || !postId) {
             return res.status(400).json({ message: 'Content and postId are required' });
         }
+
+        const post = await prisma.post.findUnique({ where: { id: postId } });
+        if (!post) return res.status(404).json({ message: 'Post not found' });
+
         const comment = await prisma.comment.create({
             data: {
                 content,
@@ -185,6 +189,19 @@ async function createComment(req, res, next) {
                  }
             
         });
+        
+        if (post.authorId !== userId) {
+            await prisma.notification.create({
+                data: {
+                    userId: post.authorId,
+                    actorId: userId,
+                    type: 'comment',
+                    postId,
+                    commentId: comment.id,
+                },
+            });
+        }
+        
         res.status(201).json(comment);
     } catch (error) {
         next(error);

@@ -21,6 +21,13 @@ async function followUser(req, res, next) {
         if (existingFollow) {
             return res.status(400).json({ message: 'Already following this user' });
         }
+        await prisma.notification.create({
+            data: {
+                userId: followingId,
+                actorId: userId,
+                type: 'follow',
+            },
+        });
         const follow = await prisma.follow.create({
             data: {
                 followerId: userId,

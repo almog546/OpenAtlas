@@ -28,6 +28,8 @@ model User {
   following Follow[] @relation("UserFollowing")
   followers Follow[] @relation("UserFollowers")
   postHistory postHistory[]
+  notifications Notification[] @relation("UserNotifications")
+  actorNotifications Notification[] @relation("ActorNotifications")
 }
 model Post {
   id        String   @id @default(cuid())
@@ -44,7 +46,8 @@ model Post {
   comments  Comment[]
   bookmarks Bookmark[]
   postHistory postHistory[]
-
+  notifications Notification[]
+ 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -75,6 +78,7 @@ model Comment {
   post      Post     @relation(fields: [postId], references: [id])
   createdAt DateTime @default(now())
   replies    reply[]
+  Notification Notification[] 
 }
 model reply {
   id        String   @id @default(cuid())
@@ -128,6 +132,25 @@ model Follow {
   createdAt   DateTime @default(now())
 
   @@unique([followerId, followingId])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation("UserNotifications", fields: [userId], references: [id])
+
+  actorId   String
+  actor     User     @relation("ActorNotifications", fields: [actorId], references: [id])
+
+  type      String
+  postId    String?
+  post      Post?    @relation(fields: [postId], references: [id])
+
+  commentId String?
+  comment   Comment? @relation(fields: [commentId], references: [id])
+
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
 enum Category {
   technology

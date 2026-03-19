@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { getNotifications, markAsRead,markOneAsRead } = require('../controllers/notificationController');
+const { createNotifications,getNotifications, markAsRead,markOneAsRead } = require('../controllers/notificationController');
+
 
 router.get('/', getNotifications);
 router.post('/mark-as-read', markAsRead);

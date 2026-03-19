@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import styles from './Navbar.module.css';
 import { UserCircle } from 'lucide-react';
 import { useState } from 'react';
+import { IoIosNotifications } from "react-icons/io";
 
 
 export default function Navbar({ user, onLogout }) {
@@ -15,6 +16,7 @@ export default function Navbar({ user, onLogout }) {
     return (
         <nav className={styles.navbar}>
             <Link to="/home" className={styles.logo}>OpenAtlas</Link>
+           
 
             {!user ? (
                 <div className={styles.authLinks}>
@@ -22,8 +24,10 @@ export default function Navbar({ user, onLogout }) {
                     <Link to="/signup" className={styles.signupBtn}>Sign Up</Link>
                 </div>
             ) : (<>
+            <div className={styles.userSection}>
                 <span className={styles.userName} onClick={handleToggleMenu}> <UserCircle size={30} strokeWidth={1.5} color="var(--primary)" /></span>
-               
+                 <Link to="/notifications" className={styles.notifications}><IoIosNotifications size={30} color='black' /></Link>
+               </div>
 
                     {toggleMenu && ( 
                 <div className={styles.userInfo}>

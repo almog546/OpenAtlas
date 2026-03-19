@@ -39,7 +39,7 @@ async function getNotifications(req, res, next) {
 async function markAsRead(req, res, next) {
     try {
         const userId = req.session.userId;
-        const { notificationIds } = req.body;
+        const { notificationIds } = req.body || {};
         if (!userId) {
             return res.status(401).json({ message: 'Not authenticated' });
         }
@@ -89,8 +89,12 @@ async function markOneAsRead(req, res, next) {
     }
 }
 
+
+
+
 module.exports = {
     getNotifications,
     markAsRead,
     markOneAsRead,
+   
 };
