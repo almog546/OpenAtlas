@@ -622,6 +622,60 @@ async function adminDeletePost(req, res, next) {
         next(error);
     }
 }
+async function adminDeleteComment(req, res, next) {
+    try {
+        const { id } = req.params;
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+        });
+        if (!user || user.role !== 'ADMIN') {
+            return res.status(403).json({ message: 'Forbidden' });
+        }
+        const comment = await prisma.comment.findUnique({
+            where: { id },
+        });
+        if (!comment) {
+            return res.status(404).json({ message: 'Comment not found' });
+        }
+        await prisma.comment.delete({
+            where: { id },
+        });
+        res.status(204).end();
+    } catch (error) {
+        next(error);
+    }
+}
+async function adminDeleteReply(req, res, next) {
+    try {
+        const { id } = req.params;
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+        });
+        if (!user || user.role !== 'ADMIN') {
+            return res.status(403).json({ message: 'Forbidden' });
+        }
+        const reply = await prisma.reply.findUnique({
+            where: { id },
+        });
+        if (!reply) {
+            return res.status(404).json({ message: 'Reply not found' });
+        }
+        await prisma.reply.delete({
+            where: { id },
+        });
+        res.status(204).end();
+    } catch (error) {
+        next(error);
+    }
+}
 
 module.exports = {
     getPosts,
@@ -648,5 +702,7 @@ module.exports = {
     getPostsByAuthorId,
     getEditedHistory,
     getEditedHistoryById,
-    adminDeletePost
+    adminDeletePost,
+    adminDeleteComment,
+    adminDeleteReply
 };
