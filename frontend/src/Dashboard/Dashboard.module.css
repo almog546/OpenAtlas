@@ -409,103 +409,135 @@
 }
 
 
+.content {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 0 24px;
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
 .content h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-main);
-    letter-spacing: -0.02em;
-    margin-bottom: 1.75rem;
+    font-size: 1.8rem;
+    font-weight: 850;
+    color: #0f172a; 
+    letter-spacing: -0.03em;
+    margin-bottom: 32px;
 }
 
 .report {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 0.75rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    background: #ffffff;
+    border: 1px solid #e2e8f0; 
+    border-radius: 16px;
+    margin-bottom: 16px;
+    transition: all 0.2s ease;
 }
 
 .report:hover {
-    border-color: var(--border-strong);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    border-color: #cbd5e1; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 .reportDetails {
-    padding: 1.25rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
+    padding: 24px;
 }
 
-.reportDetails h3 {
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: var(--text-main);
-    margin: 0 0 0.25rem;
+
+.reportHeader, .reportHeadera {
+    display: flex;
+    align-items: center;
+    gap: 12px; 
+    margin-bottom: 20px;
 }
+
+.reportHeader h3, .reportHeadera h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+
+.resolveButton {
+    margin-left: auto; 
+    background: #10b981; 
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.resolveButton:hover {
+    background: #059669; 
+}
+
+.deleteButton {
+    background: #f1f5f9; 
+    color: #475569; 
+    border: 1px solid #e2e8f0;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.deleteButton:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
 
 .reportDetails p {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin: 0;
-    line-height: 1.5;
+    margin: 6px 0;
+    font-size: 0.9rem;
+    color: #64748b;
 }
 
-.reportDetails p:first-of-type {
-    color: var(--danger);
-    font-weight: 600;
+
+.reportDetails p:nth-of-type(3) {
+    background: #f8fafc;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border-right: 3px solid #cbd5e1;
+    color: #334155;
+    margin: 12px 0;
+    font-weight: 500;
 }
 
-.reportDetails p:last-of-type {
-    font-size: 0.78rem;
-    color: var(--text-light);
-    margin-top: 0.25rem;
-}
-.reportActions {
-    padding: 0.75rem 1.5rem;
-    background-color: #fef2f2;
-    border-top: 1px solid #fecaca;
+
+.reportActions p, .closedReport p {
+    display: inline-flex;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 8px;
 }
 
 .reportActions p {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--danger);
-    margin: 0;
-}
-
-.closedReport {
-    padding: 0.75rem 1.5rem;
-    background-color: var(--bg-muted);
-    border-top: 1px solid var(--border);
+    background: #fffbeb;
+    color: #b45309;
 }
 
 .closedReport p {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text-light);
-    margin: 0;
-}
-.reportHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.resolveButton {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    border-radius: 6px;
-    cursor: pointer;
-    border: none;
-    background-color: var(--success);
-    color: #ffffff;
-    transition: background-color 0.15s, transform 0.1s;
-}
-.resolveButton:hover {
-    background-color: #15803d;
+    background: #ecfdf5;
+    color: #047857;
 }
 
+@media (max-width: 600px) {
+    .reportHeader, .reportHeadera {
+        flex-wrap: wrap;
+    }
+    .resolveButton {
+        margin-left: 0;
+    }
+}
 
 
 

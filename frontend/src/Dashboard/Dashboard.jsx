@@ -356,6 +356,7 @@ async function handleToggleReportStatus(reportId, status) {
                         <div className={styles.reportHeader}>        
                     <h3>Reported by: {report.reporter.name}</h3>
                     <button onClick={() => handleToggleReportStatus(report.id, 'RESOLVED')} className={styles.resolveButton}>Resolve</button>
+                    <button onClick={() => navigate(`/posts/${report.post.id}`)} className={styles.deleteButton}>View Post</button>
                     </div> 
                     <p>Reason: {report.reason}</p>
                     <p>Type: {report.type}</p>                  
@@ -381,6 +382,7 @@ async function handleToggleReportStatus(reportId, status) {
                      <div className={styles.reportHeadera}>        
                     <h3>Reported by: {report.reporter.name}</h3>
                     <button onClick={() => handleToggleReportStatus(report.id, 'RESOLVED')} className={styles.resolveButton}>Resolve</button>
+                    <button onClick={() => navigate(`/posts/${report.comment?.postId}`)} className={styles.deleteButton}>View Post</button>
                     </div> 
                     <p>Reason: {report.reason}</p>
                     <p>Type: {report.type}</p>                  
