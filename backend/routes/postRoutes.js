@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { getPosts,getpostbyid,createPosts,getMyPosts,getmypostbyid,deletemyposts,editmyposts,getPostsByAuthorId,
     createComment, getCommentsByPostId, deleteComment,editComment,
-    replyToComment,getRepliesByCommentId,deleteReply,editReply,
+    replyToComment,getRepliesByCommentId,getRepliesByPostId,deleteReply,editReply,
     bookMarkpost,unbookmarkpost,getBookmarkedPosts,checkBookmarkStatus,
     addView,
     getTrendingPosts,
@@ -26,6 +26,7 @@ router.put('/comments/:id', editComment);
 router.delete('/comments/:id', deleteComment);
 router.post('/comments/:id/replies', replyToComment);
 router.get('/comments/:id/replies', getRepliesByCommentId);
+router.get('/:postId/replies', getRepliesByPostId);
 router.get('/:id/bookmark/check', checkBookmarkStatus);
 router.post('/:id/bookmark', bookMarkpost);
 router.delete('/:id/bookmark', unbookmarkpost);

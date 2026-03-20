@@ -327,6 +327,28 @@ async function getRepliesByCommentId(req, res, next) {
         next(error);
     }
 }
+async function getRepliesByPostId(req, res, next) {
+    try {
+        const { postId } = req.params;
+        const comments = await prisma.comment.findMany({
+            where: { postId },
+        });
+        const commentIds = comments.map(c => c.id);
+        const replies = await prisma.reply.findMany({
+            where: { commentId: { in: commentIds } },
+            include: {
+                author: {
+                    include: {
+                        profile: true,
+                    },
+                },
+            },
+        });
+        res.json(replies);
+    } catch (error) {
+        next(error);
+    }
+}
 async function deleteReply(req, res, next) {
     try {
         const { id } = req.params;
@@ -691,6 +713,7 @@ module.exports = {
     editComment,
     replyToComment,
     getRepliesByCommentId,
+    getRepliesByPostId,
     deleteReply,
     editReply,
     bookMarkpost,

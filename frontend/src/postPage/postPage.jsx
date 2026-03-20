@@ -58,7 +58,7 @@ export default function PostPage({ user }) {
 useEffect(() => {
         async function fetchReplies() {
             try {
-                const response = await api.get(`/api/posts/comments/${id}/replies`);
+                const response = await api.get(`/api/posts/${id}/replies`);
                 setReplies(response.data);
             } catch (err) {
                 console.error('Failed to fetch replies', err);
@@ -217,7 +217,7 @@ function handleprofilepostclick(postId) {
             console.error('Failed to submit comment report', err);
         }
     }
-    async function handleAdminDelete() {
+    async function handleAdminDeletePost() {
         try {
             await api.delete(`/api/posts/admin/${id}`);
             
@@ -227,6 +227,23 @@ function handleprofilepostclick(postId) {
             
         }
     }
+    async function handleAdminDeleteComment(commentId) {
+        try {
+            await api.delete(`/api/posts/admin/comments/${commentId}`);
+            setComments(comments.filter(comment => comment.id !== commentId));
+        } catch (err) {
+            console.error('Failed to delete comment', err);
+        }
+    }
+    async function handleAdminDeleteReply(replyId) {
+        try {
+            await api.delete(`/api/posts/admin/replies/${replyId}`);
+            setReplies(replies.filter(reply => reply.id !== replyId));
+        } catch (err) {
+            console.error('Failed to delete reply', err);
+        }
+    }
+
 
            
 
@@ -257,7 +274,7 @@ function handleprofilepostclick(postId) {
                         {bookmarked ? 'Unbookmark' : 'Bookmark'}
                     </button>
                     <button className={styles.reportButton} onClick={toggleReport}>Report</button>
-                        {user.role === 'ADMIN' && <button className={styles.deleteButton} onClick={handleAdminDelete}>Delete Post</button>}
+                        {user.role === 'ADMIN' && <button className={styles.deleteButtonPost} onClick={handleAdminDeletePost}>Delete Post</button>}
                     {openreport && (
                         <div className={styles.reportModal}>
                             <div className={styles.reportContent}>
@@ -333,6 +350,7 @@ function handleprofilepostclick(postId) {
                                       <button className={styles.commentButton} onClick={() => { setReplyToggle(true); setReplyingToCommentId(comment.id); }}>Reply</button>
                                 )}
                                 <button className={styles.reportButton} onClick={() => toggleCommentReport(comment.id)}>Report</button>
+                                  {user.role === 'ADMIN' && <button className={styles.deleteButton} onClick={() => handleAdminDeleteComment(comment.id)}>Delete Comment</button>}
                                 {openCommentReport && reportingCommentId === comment.id && (
                                     <div className={styles.reportModal}>
                                         <div className={styles.reportContent}>
