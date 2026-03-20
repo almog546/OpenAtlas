@@ -380,8 +380,13 @@ function handleprofilepostclick(postId) {
                                         <button onClick={toggleReplying} className={styles.commentButton}>Cancel Reply</button>
                                     </>
                                 )}
-                                {replies.filter(reply => reply.commentId === comment.id).map(reply => (<div key={reply.id}><p className={styles.commentReply}>{reply.content}</p></div>))}
-                              
+                                  {user.role === 'ADMIN' && replies.filter(reply => reply.commentId === comment.id).map(reply => (
+                                    <div key={reply.id}>
+                                        <p className={styles.commentReply}>{reply.content}</p>
+                                        <button className={styles.deleteButton} onClick={() => handleAdminDeleteReply(reply.id)}>Delete Reply</button>
+                                    </div>
+                                ))}
+                               
                                 </>
                                 
                         }
