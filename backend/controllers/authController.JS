@@ -120,7 +120,16 @@ async function getAllUsers(req, res, next) {
                 username: true,
                 name: true,
                 role: true,
-            },
+                 _count: {
+                    select: {
+                        posts: true,
+                        comments: true,
+                        replies: true,
+                    },
+                },
+},
+           
+            
         });
         res.json(users);
     } catch (error) {

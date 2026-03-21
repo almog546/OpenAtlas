@@ -19,9 +19,21 @@ export default function Dashboard({ user }) {
     const [reports, setReports] = useState([]);
     const [reportResloved, setReportResolved] = useState(false);
     const [allPosts, setAllPosts] = useState([]);
+    const [getUsers, setGetUsers] = useState([]);
 
 
-    
+    useEffect(() => {
+        async function fetchUsers() {
+            try {
+                const response = await api.get('/api/auth/users');
+                setGetUsers(response.data);
+            }
+            catch (err) {
+                console.error('Failed to fetch users', err);
+            }
+        }
+        fetchUsers();
+    }, []);
     useEffect(() => {
         async function fetchAllPosts() {
             try {
@@ -170,6 +182,12 @@ const mostViewedPost = content.reduce((mostViewed, post) => {
         return post;
     }
     return mostViewed;
+}, null);
+const userWithMostPosts = getUsers.reduce((mostPostsUser, user) => {
+    if (!mostPostsUser || user._count.posts > mostPostsUser._count.posts) {
+        return user;
+    }
+    return mostPostsUser;
 }, null);
 
 
@@ -367,32 +385,32 @@ const mostViewedPost = content.reduce((mostViewed, post) => {
     </div>
 )}
 {toggleMenu === 'AdminPanel' && (
-    <div className={styles.content}>
+    <div className={styles.contentAdminPanel}>
         <h1>Admin Panel</h1>
         {reports.length === 0 ? (
             <p>No reports found. Great job keeping the community safe!</p>
         ) : (
             <>
             {reports.map(report => (
-                <div key={report.id} className={styles.report}>
+                <div key={report.id} className={styles.reportAdminPanel}>
                      {report.type === 'POST' && (    <>      
-                     <div className={styles.reportDetails}>
-                        <div className={styles.reportHeader}>        
+                     <div className={styles.reportDetailsAdminPanel}>
+                        <div className={styles.reportHeaderAdminPanel}>        
                     <h3>Reported by: {report.reporter.name}</h3>
-                    <button onClick={() => handleToggleReportStatus(report.id, 'RESOLVED')} className={styles.resolveButton}>Resolve</button>
-                    <button onClick={() => navigate(`/posts/${report.post.id}`)} className={styles.deleteButton}>View Post</button>
+                    <button onClick={() => handleToggleReportStatus(report.id, 'RESOLVED')} className={styles.resolveButtonAdminPanel}>Resolve</button>
+                    <button onClick={() => navigate(`/posts/${report.post.id}`)} className={styles.viewButtonAdminPanel}>View Post</button>
                     </div> 
                     <p>Reason: {report.reason}</p>
                     <p>Type: {report.type}</p>                  
                     <p>Post title: {report.post?.title}</p>
                     <p>Date: {new Date(report.createdAt).toLocaleDateString()}</p>
                      {report.status === 'OPEN' && (
-                        <div className={styles.reportActions}>
+                        <div className={styles.reportActionsAdminPanelAdminPanel}>
                             <p>Report is open</p>
                             </div>
                     )}
                     {report.status === 'RESOLVED' && (
-                        <div className={styles.closedReport}>
+                        <div className={styles.closedReportAdminPanel}>
                             <p>Report closed</p>
                         </div>
                     )}
@@ -402,23 +420,23 @@ const mostViewedPost = content.reduce((mostViewed, post) => {
                     )}
                     {report.type === 'COMMENT' && (                      
                     <>
-                    <div className={styles.reportDetails}>
-                     <div className={styles.reportHeadera}>        
+                    <div className={styles.reportDetailsAdminPanelAdminPanel}>
+                     <div className={styles.reportHeaderAdminPanelAdminPanel}>        
                     <h3>Reported by: {report.reporter.name}</h3>
-                    <button onClick={() => handleToggleReportStatus(report.id, 'RESOLVED')} className={styles.resolveButton}>Resolve</button>
-                    <button onClick={() => navigate(`/posts/${report.comment?.postId}`)} className={styles.deleteButton}>View Post</button>
+                    <button onClick={() => handleToggleReportStatus(report.id, 'RESOLVED')} className={styles.resolveButtonAdminPanel}>Resolve</button>
+                    <button onClick={() => navigate(`/posts/${report.comment?.postId}`)} className={styles.viewButtonAdminPanel}>View Post</button>
                     </div> 
                     <p>Reason: {report.reason}</p>
                     <p>Type: {report.type}</p>                  
                     <p>Comment content: {report.comment?.content}</p>
                     <p>Date: {new Date(report.createdAt).toLocaleDateString()}</p>
                      {report.status === 'OPEN' && (
-                        <div className={styles.reportActions}>
+                        <div className={styles.reportActionsAdminPanel}>
                             <p>Report is open</p>
                             </div>
                     )}
                     {report.status === 'RESOLVED' && (
-                        <div className={styles.closedReport}>
+                        <div className={styles.closedReportAdminPanel}>
                             <p>Report closed</p>
                         </div>
                     )}
@@ -451,11 +469,44 @@ const mostViewedPost = content.reduce((mostViewed, post) => {
     </div>
 )}
 {toggleMenu === 'Insights' && (
-    <div className={styles.content}>
-        <h1>Platform Analytics & Insights</h1>
-        <h2>Total Posts: {allPosts.length}</h2>
-        <h2>Total Views: {allPosts.reduce((acc, post) => acc + (post.views || 0), 0)}</h2>
-        <h2>Total Comments: {allPosts.reduce((acc, post) => acc + (post.comments?.length || 0), 0)}</h2>
+    <div className={styles.contentInsights}>
+        <header className={styles.header}>
+            <h1>Platform Insights</h1>
+            <p>Real-time overview of your community activity</p>
+        </header>
+
+        <div className={styles.statsGrid}>
+            <div className={styles.statCard}>
+                <span className={styles.label}>Total Posts</span>
+                <span className={styles.value}>{allPosts.length}</span>
+            </div>
+            
+            <div className={styles.statCard}>
+                <span className={styles.label}>Total Views</span>
+                <span className={styles.value}>{allPosts.reduce((acc, post) => acc + (post.views || 0), 0).toLocaleString()}</span>
+            </div>
+
+            <div className={styles.statCard}>
+                <span className={styles.label}>Total Comments</span>
+                <span className={styles.value}>{allPosts.reduce((acc, post) => acc + (post.comments?.length || 0), 0)}</span>
+            </div>
+
+            <div className={styles.statCard}>
+                <span className={styles.label}>Total Users</span>
+                <span className={styles.value}>{getUsers.length}</span>
+            </div>
+
+            <div className={`${styles.statCard} ${styles.alert}`}>
+                <span className={styles.label}>Open Reports</span>
+                <span className={styles.value}>{reports.length}</span>
+            </div>
+
+            <div className={`${styles.statCard} ${styles.featured}`}>
+                <span className={styles.label}>Top Contributor</span>
+                <span className={styles.value}>{userWithMostPosts.name}</span>
+                <span className={styles.subtext}>Most active user on the platform</span>
+            </div>
+        </div>
     </div>
 )}
 
