@@ -350,7 +350,7 @@ function handleprofilepostclick(postId) {
                                       <button className={styles.commentButton} onClick={() => { setReplyToggle(true); setReplyingToCommentId(comment.id); }}>Reply</button>
                                 )}
                                 <button className={styles.reportButton} onClick={() => toggleCommentReport(comment.id)}>Report</button>
-                                  {user.role === 'ADMIN' && <button className={styles.deleteButton} onClick={() => handleAdminDeleteComment(comment.id)}>Delete Comment</button>}
+                                  {user?.role === 'ADMIN' && <button className={styles.deleteButton} onClick={() => handleAdminDeleteComment(comment.id)}>Delete Comment</button>}
                                 {openCommentReport && reportingCommentId === comment.id && (
                                     <div className={styles.reportModal}>
                                         <div className={styles.reportContent}>
@@ -380,7 +380,7 @@ function handleprofilepostclick(postId) {
                                         <button onClick={toggleReplying} className={styles.commentButton}>Cancel Reply</button>
                                     </>
                                 )}
-                                  {user.role === 'ADMIN' && replies.filter(reply => reply.commentId === comment.id).map(reply => (
+                                  {user?.role === 'ADMIN' && replies.filter(reply => reply.commentId === comment.id).map(reply => (
                                     <div key={reply.id}>
                                         <p className={styles.commentReply}>{reply.content}</p>
                                         <button className={styles.deleteButton} onClick={() => handleAdminDeleteReply(reply.id)}>Delete Reply</button>

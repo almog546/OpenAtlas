@@ -152,6 +152,12 @@ async function handleToggleReportStatus(reportId, status) {
         console.error('Failed to update report status', err);
     }
 }
+const mostViewedPost = content.reduce((mostViewed, post) => {
+    if (!mostViewed || (post.views || 0) > (mostViewed.views || 0)) {
+        return post;
+    }
+    return mostViewed;
+}, null);
 
 
 
@@ -175,6 +181,7 @@ async function handleToggleReportStatus(reportId, status) {
                                 <li className={styles.dashboardItem} onClick={() => handleToggleMenu('SavedArticles')}> Saved Articles </li>
                                 <li className={styles.dashboardItem} onClick={() => handleToggleMenu('FollowingAuthors')}> Following  </li>
                                 <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Followers')}> Followers </li>
+                                <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Analytics')}> Analytics </li>
                                  <Link to="/newpost" className={styles.dashboardItem}>Write Article</Link>
                                 </>
                             )}
@@ -405,6 +412,24 @@ async function handleToggleReportStatus(reportId, status) {
             ))
             }
             </>
+        )}
+    </div>
+)}
+ {toggleMenu === 'Analytics' && (
+    <div className={styles.content}>
+        <h1>Analytics</h1>
+        <h2>total Post {content.length}</h2>
+        <h2>total views {content.reduce((acc, post) => acc + (post.views || 0), 0)} </h2>
+        <h2>total comments {content.reduce((acc, post) => acc + (post.comments?.length || 0), 0)}</h2>
+        {mostViewedPost ? (
+            <div className={styles.mostViewed}>
+                <h2>Most Viewed Post</h2>
+                <h3>{mostViewedPost.title}</h3>
+                <p>Views: {mostViewedPost.views || 0}</p>
+                <button onClick={() => navigate(`/myposts/${mostViewedPost.id}`)} className={styles.viewButton}>View Post</button>
+            </div>
+        ) : (
+            <p>No posts found to analyze.</p>
         )}
     </div>
 )}

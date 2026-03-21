@@ -59,6 +59,8 @@ async function getMyPosts(req, res, next) {
         }
         const posts = await prisma.post.findMany({
             where: { authorId: userId },
+            include: { author: true },
+            include: {comments: true}
         });
         res.json(posts);
     }
