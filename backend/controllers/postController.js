@@ -3,7 +3,7 @@ const prisma = require('../prismaClient');
 async function getPosts(req, res, next) {
     try {
         const posts = await prisma.post.findMany({
-            include: { author: true },
+            include: { author: { include: { profile: true } }, comments: true }
         });
         res.json(posts);
     } catch (error) {

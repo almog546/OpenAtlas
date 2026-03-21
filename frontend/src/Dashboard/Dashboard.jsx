@@ -18,9 +18,22 @@ export default function Dashboard({ user }) {
     const [followersCount, setFollowersCount] = useState(0);
     const [reports, setReports] = useState([]);
     const [reportResloved, setReportResolved] = useState(false);
+    const [allPosts, setAllPosts] = useState([]);
 
 
-
+    
+    useEffect(() => {
+        async function fetchAllPosts() {
+            try {
+                const response = await api.get('/api/posts');
+                setAllPosts(response.data);
+            }
+            catch (err) {
+                console.error('Failed to fetch all posts', err);
+            }
+        }
+        fetchAllPosts();
+    }, []);
     useEffect(() => {
         async function fetchReports() {
             try {
@@ -173,7 +186,11 @@ const mostViewedPost = content.reduce((mostViewed, post) => {
         <div className={styles.container}>
               <h2>Dashboard</h2>
                         <ul className={styles.dashboard}>
-                            {user.role === 'ADMIN' ? (<li className={styles.dashboardItem} onClick={() => handleToggleMenu('AdminPanel')}> Admin Panel </li>) : (
+                            {user.role === 'ADMIN' ? <>
+                            <li className={styles.dashboardItem} onClick={() => handleToggleMenu('AdminPanel')}> Admin Panel </li>
+                            <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Insights')}> Platform Analytics & Insights </li>
+                           </>
+                            : (
                                 <>
                                 <li className={styles.dashboardItem} onClick={() => handleToggleMenu('MyArticles')}> My Articles </li>
                                 <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Drafts')}> Drafts </li>
@@ -431,6 +448,14 @@ const mostViewedPost = content.reduce((mostViewed, post) => {
         ) : (
             <p>No posts found to analyze.</p>
         )}
+    </div>
+)}
+{toggleMenu === 'Insights' && (
+    <div className={styles.content}>
+        <h1>Platform Analytics & Insights</h1>
+        <h2>Total Posts: {allPosts.length}</h2>
+        <h2>Total Views: {allPosts.reduce((acc, post) => acc + (post.views || 0), 0)}</h2>
+        <h2>Total Comments: {allPosts.reduce((acc, post) => acc + (post.comments?.length || 0), 0)}</h2>
     </div>
 )}
 

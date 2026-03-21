@@ -112,10 +112,26 @@ async function logout(req, res, next) {
         next(error);
     }
 }
+async function getAllUsers(req, res, next) {
+    try {
+        const users = await prisma.user.findMany({
+            select: {
+                id: true,
+                username: true,
+                name: true,
+                role: true,
+            },
+        });
+        res.json(users);
+    } catch (error) {
+        next(error);
+    }
+}
 
 module.exports = {
     signup,
     login,
     me,
     logout,
+    getAllUsers
 };
