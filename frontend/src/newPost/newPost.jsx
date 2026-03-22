@@ -1,4 +1,4 @@
-import styles from './NewPost.module.css';
+import styles from './newPost.module.css';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import api from '../api/axios';
