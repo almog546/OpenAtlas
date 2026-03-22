@@ -1078,6 +1078,9 @@
     color: rgba(255, 255, 255, 0.6);
     margin-top: 4px;
 }
+.sidebarSmallScreen {
+    display: none;
+}
 
 @media (max-width: 640px) {
     .contentMyArticles {
@@ -1207,5 +1210,109 @@
         margin-left: 0;
         padding: 1.25rem 1rem;
         padding-bottom: 80px;
+    }
+}
+
+@media (max-width: 768px) {
+    
+    .dashboard {
+        display: none;
+    }
+
+    
+    .sidebarSmallScreen {
+        display: block;
+        padding: 10px 20px;
+        background: var(--bg-main);
+        border-bottom: 1px solid var(--border);
+  
+        position: relative; 
+        z-index: 50;
+    }
+
+   
+    .menuButton {
+        background: var(--bg-muted);
+        color: var(--text-main);
+        border: 1px solid var(--border);
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+    }
+
+    .menuButton:hover {
+        background: var(--primary-light);
+        border-color: var(--border-strong);
+    }
+
+    
+    .dashboardSmallScreen {
+        position: absolute;
+        top: 55px;
+        left: 20px; 
+        width: 250px; 
+        background: var(--bg-main);
+        border: 1px solid var(--border-strong);
+        border-radius: 12px;
+        padding: 8px;
+        list-style: none;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        margin: 0;
+        animation: fadeIn 0.2s ease-out;
+    }
+
+    
+    .dashboardItem {
+        display: block;
+        padding: 10px 14px;
+        color: var(--text-muted);
+        font-weight: 500;
+        font-size: 0.9rem;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        text-align: left; 
+    }
+
+    .dashboardItem:hover {
+        background: var(--bg-muted);
+        color: var(--primary);
+        padding-left: 18px; 
+    }
+
+    
+    .dashboardItem[href="/newpost"],
+    .dashboardItem:last-child {
+        background: var(--primary); 
+        color: white;
+        text-align: center; 
+        margin-top: 6px;
+        font-weight: 600;
+    }
+
+    .dashboardItem[href="/newpost"]:hover {
+        background: var(--primary-hover);
+        padding-left: 14px; 
+    }
+
+   
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 }

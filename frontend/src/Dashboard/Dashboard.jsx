@@ -20,6 +20,7 @@ export default function Dashboard({ user }) {
     const [reportResloved, setReportResolved] = useState(false);
     const [allPosts, setAllPosts] = useState([]);
     const [getUsers, setGetUsers] = useState([]);
+    const [smallScreen, setSmallScreen] = useState(false);
 
 
     useEffect(() => {
@@ -190,6 +191,10 @@ const userWithMostPosts = getUsers.reduce((mostPostsUser, user) => {
     return mostPostsUser;
 }, null);
 
+function smallScreenToggle() {
+    setSmallScreen((prev) => !prev);
+}
+
 
 
 
@@ -200,8 +205,36 @@ const userWithMostPosts = getUsers.reduce((mostPostsUser, user) => {
         <Navigate to="/login" replace />
     ) : (
         <>
-        
+
+         <div className={styles.sidebarSmallScreen}>
+                <button onClick={smallScreenToggle} className={styles.menuButton}>
+                    {smallScreen ? 'Close Menu' : 'Open Menu'}
+                </button>
+                {smallScreen && (
+                    <ul className={styles.dashboardSmallScreen}>
+                        {user.role === 'ADMIN' ? <>
+                            <li className={styles.dashboardItem} onClick={() => handleToggleMenu('AdminPanel')}> Admin Panel </li>
+                            <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Insights')}> Platform Analytics & Insights </li>
+                           </>
+                            : (
+                                <>
+                                <li className={styles.dashboardItem} onClick={() => handleToggleMenu('MyArticles')}> My Articles </li>
+                                <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Drafts')}> Drafts </li>
+                                <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Profile')}> Profile </li>
+                                <li className={styles.dashboardItem} onClick={() => handleToggleMenu('SavedArticles')}> Saved Articles </li>
+                                <li className={styles.dashboardItem} onClick={() => handleToggleMenu('FollowingAuthors')}> Following  </li>
+                                <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Followers')}> Followers </li>
+                                <li className={styles.dashboardItem} onClick={() => handleToggleMenu('Analytics')}> Analytics </li>
+                                    <Link to="/newpost" className={styles.dashboardItem}>Write Article</Link>
+                                </>
+                            )}
+                    </ul>
+                )}
+
+            </div>
         <div className={styles.container}>
+           
+           
               <h2>Dashboard</h2>
                         <ul className={styles.dashboard}>
                             {user.role === 'ADMIN' ? <>
