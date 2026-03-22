@@ -4,6 +4,9 @@ import api from '../api/axios';
 import { Navigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import DOMPurify from 'dompurify';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 export default function MyPosts({ user }) {
     const [posts, setPosts] = useState(null);
@@ -108,10 +111,10 @@ return (
                             value={editedTitle}
                             onChange={(e) => setEditedTitle(e.target.value)}
                         />
-                        <textarea
+                        <ReactQuill
                             placeholder="Content"
                             value={editedContent}
-                            onChange={(e) => setEditedContent(e.target.value)}
+                            onChange={setEditedContent}
 
                         />
                        <select 
@@ -155,7 +158,9 @@ return (
                         <span>·</span>
                         <span className={styles.category}>{posts.category}</span>
                     </div>
-                    <p>{posts.content}</p>
+                    <div className={styles.content}>
+                        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(posts.content) }} />
+                    </div>
                     {editedHistory.length > 0 && (
                         <div className={styles.history}>
                             <h3>Edited History</h3>

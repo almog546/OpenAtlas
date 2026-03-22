@@ -4,6 +4,9 @@ import api from '../api/axios';
 import { useParams } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import DOMPurify from 'dompurify';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 
 
@@ -94,11 +97,11 @@ function toggleEdit() {
                                 onChange={(e) => setDraftTitle(e.target.value)}
                                 className={styles.input}
                             />
-                            <textarea
+                            <ReactQuill
                                 value={draftContent}
-                                onChange={(e) => setDraftContent(e.target.value)}
+                                onChange={setDraftContent}
                                 className={styles.textarea}
-                            ></textarea>
+                            ></ReactQuill>
                               <select 
                                                                   value={draftCategory}
                                                                   onChange={(e) => setDraftCategory(e.target.value)}
@@ -138,7 +141,9 @@ function toggleEdit() {
                         <span>·</span>
                         <span className={styles.category}>{draft.category}</span>
                     </div>
-                    <p>{draft.content}</p>
+                    <div className={styles.content}>
+                        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(draft.content) }} />
+                    </div>
                             </>
                         )}
                 </div>

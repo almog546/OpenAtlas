@@ -4,7 +4,7 @@ import api from '../api/axios';
 import { useParams } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { use } from 'react';
+import DOMPurify from 'dompurify';
 
 export default function PostPage({ user }) {
     const { id } = useParams();
@@ -295,7 +295,7 @@ function handleprofilepostclick(postId) {
           
             </div>
             <div className={styles.content}>
-            <p>{post.content}</p>
+              <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }} />
             </div>
             <div className={styles.authorPosts}>
                 <h2>More posts by {post.author.name}</h2>

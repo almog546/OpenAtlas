@@ -2,6 +2,8 @@ import styles from './NewPost.module.css';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import api from '../api/axios';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 
 export default function NewPost({ user }) {
@@ -45,11 +47,11 @@ export default function NewPost({ user }) {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                  className={styles.input} />
-                <textarea 
+                <ReactQuill
                 placeholder="Content" 
                 value={content}
-                onChange={(e) => setContent(e.target.value)}
-                className={styles.textarea}></textarea>
+                onChange={setContent}
+                className={styles.textarea} />
                 <select 
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
