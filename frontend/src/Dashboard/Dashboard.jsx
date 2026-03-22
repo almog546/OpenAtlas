@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 
 export default function Dashboard({ user }) {
-    const [toggleMenu, setToggleMenu] = useState( 'MyArticles');
+    const [toggleMenu, setToggleMenu] = useState(user.role === 'ADMIN' ? 'AdminPanel' : 'MyArticles');
     const [content, setContent] = useState([]);
     const [drafts, setDrafts] = useState([]);  
     const [profile, setProfile] = useState(null);

@@ -7,12 +7,14 @@ import { IoIosNotifications } from "react-icons/io";
 
 export default function Navbar({ user, onLogout, notifications }) {
     const [toggleMenu, setToggleMenu] = useState(false);
+ 
     
    
      
     function handleToggleMenu() {
         setToggleMenu(!toggleMenu);
     }
+   
     return (
         <nav className={styles.navbar}>
             <Link to="/" className={styles.logo}>OpenAtlas</Link>

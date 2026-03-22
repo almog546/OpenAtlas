@@ -22,6 +22,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [logout, setLogout] = useState(false);
     const [notifications, setNotifications] = useState([]);
+    const [loading, setLoading] = useState(true);
    const navigate = useNavigate();
     const location = useLocation();
 
@@ -46,10 +47,12 @@ useEffect(() => {
         setUser(response.data);
       } catch (err) {
         setUser(null);
+      }finally {
+        setLoading(false);
       }
     }
     fetchUser();
-  }, [location]);
+  }, [location.pathname]);
   async function onLogout() {
     try {
       await api.post('/api/auth/logout');
@@ -62,6 +65,15 @@ useEffect(() => {
   }
   const hideNavbar =
     location.pathname === '/login' || location.pathname === '/signup';
+    if (loading) {
+        return (
+            <div className="loading">
+                <div className="spinner"></div>
+            </div>
+        );
+    }
+
+    
     
 
 

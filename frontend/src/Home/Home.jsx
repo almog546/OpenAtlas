@@ -10,6 +10,7 @@ export default function Home() {
     const [postorder, setPostorder] = useState('');
     const [search, setSearch] = useState("");
     const [trendingPosts, setTrendingPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
    
 
 
@@ -18,6 +19,7 @@ export default function Home() {
             try {
                 const response = await api.get('/api/posts/trending');
                 setTrendingPosts(response.data);
+                
             }
             catch (err) {
                 console.error('Failed to fetch trending posts', err);
@@ -27,16 +29,19 @@ export default function Home() {
     }, []);
 
 
-
+    
 
     useEffect(() => {
         async function fetchPosts() {
             try {
                 const response = await api.get('/api/posts');
                 setPosts(response.data);
+                
             }
             catch (err) {
                 console.error('Failed to fetch posts', err);
+            }finally {
+                setLoading(false);
             }
         }
         fetchPosts();
@@ -74,6 +79,13 @@ export default function Home() {
           } else {
           setPosts([...posts].sort((a, b) => b.views - a.views));
           }
+    }
+        if (loading) {
+        return (
+            <div className={styles.loading}>
+                <div className={styles.spinner}></div>
+            </div>
+        );
     }
 
 

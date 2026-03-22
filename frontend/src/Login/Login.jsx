@@ -10,6 +10,7 @@ export default function Login( { user }) {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
    
     
@@ -25,6 +26,8 @@ export default function Login( { user }) {
         catch (err) {
             setError('Login failed');
             setSuccess(false);
+        }finally {
+            setLoading(false);
         }
     }
   
