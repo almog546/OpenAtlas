@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import api from '../api/axios';
 import Fuse from "fuse.js";
 import { CiSearch } from "react-icons/ci";
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Home() {
@@ -11,6 +12,7 @@ export default function Home() {
     const [search, setSearch] = useState("");
     const [trendingPosts, setTrendingPosts] = useState([]);
     const [loading, setLoading] = useState(true);
+     const navigate = useNavigate();
    
 
 
@@ -60,7 +62,7 @@ export default function Home() {
 
      
    function handlePostClick(id) {
-        window.location.href = `/posts/${id}`;
+        navigate(`/posts/${id}`);
     }
 
     function sortPostsnew() {
