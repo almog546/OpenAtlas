@@ -342,5 +342,6 @@
     .adminDeleteButton { width: 100%; margin-top: 12px; }
     .comment p, .commentReply { margin-left: 0; margin-top: 12px; }
     .deleteButton { width: 100%; margin-top: 12px; }
-    .deleteButtonPost { width: 100%; margin-top: 12px; min-width: unset; padding: 8px 16px; }
+    .deleteButtonPost { width: 100%; margin-top: 12px; }
+    
 }

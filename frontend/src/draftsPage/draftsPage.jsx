@@ -58,6 +58,7 @@ async function handleEdit() {
     try {
         await api.put(`/api/drafts/${id}`, 
             { title: draftTitle, content: draftContent, category: draftCategory, picture: draftPicture });
+            navigate('/Dashboard');
     } catch (err) {
         console.error('Failed to edit draft', err);
     }
