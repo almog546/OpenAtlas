@@ -39,11 +39,18 @@ export default function Navbar({ user, onLogout, notifications }) {
 
                     {toggleMenu && ( 
                 <div className={styles.userInfo}>
-                    <Link to="/newpost" className={styles.newpost}>Write Article</Link>
-                    <Link to="/Dashboard" className={styles.profile}>
-                        Dashboard         
-                    </Link>
-                    <button onClick={onLogout} className={styles.logoutButton}>Logout</button>
+                    {user.role === 'ADMIN' ? (
+                        <>
+                            <Link to="/Dashboard" className={styles.profile}>Dashboard</Link>
+                            <button onClick={onLogout} className={styles.logoutButton}>Logout</button>
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/newpost" className={styles.newpost}>Write Article</Link>
+                            <Link to="/Dashboard" className={styles.profile}>Dashboard</Link>
+                            <button onClick={onLogout} className={styles.logoutButton}>Logout</button>
+                        </>
+                    )}
                 </div>
                 )}
            </> )}

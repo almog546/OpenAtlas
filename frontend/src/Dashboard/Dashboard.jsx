@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Dashboard({ user }) {
-    const [toggleMenu, setToggleMenu] = useState('');
+    const [toggleMenu, setToggleMenu] = useState(user.role === 'ADMIN' ? 'AdminPanel' : 'MyArticles');
     const [content, setContent] = useState([]);
     const [drafts, setDrafts] = useState([]);  
     const [profile, setProfile] = useState(null);
@@ -381,9 +381,7 @@ function smallScreenToggle() {
 )}
                     <h3>{author.following.name}</h3>
                     </div>
-                    <div className={styles.FollowingpostDetails}>
-                        <span>{author.followersCount || 0} followers</span>
-                    </div>
+                    
                 </div>
             ))
             }
