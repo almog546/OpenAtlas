@@ -193,11 +193,11 @@ async function createComment(req, res, next) {
                         id: true,
                         name: true,
                         username: true,
-                          profile: {
+                        profile: {
                             select: {
                                 avatar: true,
                             },
-                            
+                        },
                     },
                 },
             },
@@ -235,10 +235,11 @@ async function getCommentsByPostId(req, res, next) {
                         id: true,
                         name: true,
                         username: true,
-                         profile: {
+                        profile: {
                             select: {
                                 avatar: true,
                             },
+                        },
                     },
                 },
             },
