@@ -7,20 +7,22 @@ app.use(express.json());
 
 app.use(
     cors({
-        origin: true,
+        origin: process.env.CLIENT_URL,
         credentials: true,
     }),
 );
+app.set('trust proxy', 1);
+
 app.use(
     session({
         name: 'sid',
-        secret: 'super-secret',
+        secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
         cookie: {
             httpOnly: true,
-            sameSite: 'lax',
-            secure: false,
+            sameSite: 'none',
+            secure: true,
         },
     }),
 );
@@ -44,4 +46,8 @@ app.use((err, req, res, next) => {
     });
 });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
