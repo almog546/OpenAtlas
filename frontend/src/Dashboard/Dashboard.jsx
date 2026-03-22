@@ -5,8 +5,9 @@ import api from '../api/axios';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+
 export default function Dashboard({ user }) {
-    const [toggleMenu, setToggleMenu] = useState(user.role === 'ADMIN' ? 'AdminPanel' : 'MyArticles');
+    const [toggleMenu, setToggleMenu] = useState( 'MyArticles');
     const [content, setContent] = useState([]);
     const [drafts, setDrafts] = useState([]);  
     const [profile, setProfile] = useState(null);
@@ -197,8 +198,6 @@ function smallScreenToggle() {
 
 
 
-
-    
 
     return (<>
     {!user ? (
@@ -538,6 +537,7 @@ function smallScreenToggle() {
                 <span className={styles.subtext}>Most active user on the platform</span>
             </div>
         </div>
+       
     </div>
 )}
 

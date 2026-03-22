@@ -15,7 +15,7 @@ export default function Navbar({ user, onLogout, notifications }) {
     }
     return (
         <nav className={styles.navbar}>
-            <Link to="/home" className={styles.logo}>OpenAtlas</Link>
+            <Link to="/" className={styles.logo}>OpenAtlas</Link>
            
 
             {!user ? (

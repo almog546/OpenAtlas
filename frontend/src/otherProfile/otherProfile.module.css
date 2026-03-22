@@ -190,9 +190,28 @@
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
 }
+.loginLink {
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
 
 
 
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+@media (max-width: 600px) {
+    .profileInfo {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    .follow {
+        align-self: stretch;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
 }

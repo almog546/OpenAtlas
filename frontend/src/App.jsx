@@ -71,7 +71,7 @@ useEffect(() => {
       <Routes>
         <Route path="/signup" element={<Signup user={user} />} />
         <Route path="/login" element={<Login user={user} />} />
-        <Route path="/home" element={<Home user={user} />} />
+        <Route path="/" element={<Home user={user} />} />
         <Route path="/posts/:id" element={<PostPage user={user} />} />
         <Route path="/newpost" element={<NewPost user={user} />} />
         <Route path="/Dashboard" element={<Dashboard user={user} />} />

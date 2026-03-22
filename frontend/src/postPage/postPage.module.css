@@ -329,6 +329,12 @@
 .deleteButtonPost:hover {
     background: rgb(255, 125, 125);
 }
+.loginLink {
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
 
 @keyframes spin {
     to { transform: rotate(360deg); }

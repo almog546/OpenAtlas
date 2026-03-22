@@ -77,7 +77,7 @@ export default function Signup( { user }) {
             </form>
         </div>
         ) : (
-            <Navigate to="/home" replace />
+            <Navigate to="/" replace />
         )}
    </> );
 }

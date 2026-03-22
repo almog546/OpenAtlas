@@ -2,7 +2,7 @@ import styles from './Login.module.css';
 import { useState } from 'react';
 import api from '../api/axios';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { useLocation } from "react-router-dom";
+
 
 
 export default function Login( { user }) {
@@ -11,7 +11,7 @@ export default function Login( { user }) {
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
     const navigate = useNavigate();
-    const location = useLocation();
+   
     
 
     async function handleSubmit(e) {
@@ -20,7 +20,7 @@ export default function Login( { user }) {
             await api.post('/api/auth/login', { username, password });
             setSuccess(true);
             setError(false);
-            navigate('/Home');
+            navigate('/');
         }
         catch (err) {
             setError('Login failed');
@@ -55,7 +55,7 @@ export default function Login( { user }) {
             </form>
         </div>
         ) : (
-            <Navigate to="/home" replace />
+            <Navigate to="/" replace />
         )}
         
 

@@ -221,7 +221,7 @@ function handleprofilepostclick(postId) {
         try {
             await api.delete(`/api/posts/admin/${id}`);
             
-            navigate('/home');
+            navigate('/');
         } catch (err) {
             console.error('Failed to delete post', err);
             
@@ -306,6 +306,10 @@ function handleprofilepostclick(postId) {
             </div>
             <div className={styles.comments}>
                 <h2>Comments</h2>
+                {!user ? (
+                    <p>Please <span className={styles.loginLink} onClick={() => navigate('/login')}>log in</span> to add a comment.</p>
+                ) : (
+                <>
                 <textarea
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
@@ -313,6 +317,8 @@ function handleprofilepostclick(postId) {
                     className={styles.commentInput}
                 />
                 <button onClick={handleAddComment} className={styles.commentButton}>Submit</button>
+                </>
+                )}
                 {comments.map(comment => (
                     <div key={comment.id} className={styles.comment}>
                 {comment.author.profile?.avatar? (

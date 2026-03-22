@@ -95,10 +95,16 @@ export default function OtherProfile({ user }) {
             <div className={styles.userName}>{profile.user.name}</div>
             </div>
             <div className={styles.follow}>
+                {!user ? (
+                    <p>Please <span className={styles.loginLink} onClick={() => navigate('/login')}>log in</span> to follow this user.</p>
+                ) : (
+                <>
                 {isFollowing ? (
                     <button className={styles.followButton} onClick={handleUnfollow}>Unfollow</button>
                 ) : (
                     <button className={styles.followButton} onClick={handleFollow}>Follow</button>
+                )}
+                </>
                 )}
             </div>
         </div>
