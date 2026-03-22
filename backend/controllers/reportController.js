@@ -49,10 +49,34 @@ async function getReports(req, res, next) {
         const reports = await prisma.report.findMany(
             {
                 where: { status: 'OPEN' },
-                include: {
-                    post: true,
-                    comment: true,
-                    reporter: true,
+                select: {
+                    id: true,
+                    reason: true,
+                    type: true,
+                    status: true,
+                    createdAt: true,
+                    reporterId: true,
+                    postId: true,
+                    commentId: true,
+                    post: {
+                        select: {
+                            id: true,
+                            title: true,
+                        },
+                    },
+                    comment: {
+                        select: {
+                            id: true,
+                            content: true,
+                        },
+                    },
+                    reporter: {
+                        select: {
+                            id: true,
+                            name: true,
+                            username: true,
+                        },
+                    },
                 },
             }
         );

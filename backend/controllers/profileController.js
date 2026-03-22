@@ -10,13 +10,16 @@ async function getMyProfile(req, res, next) {
 
         const profile = await prisma.profile.findUnique({
             where: { userId },
-            include: {
+            select: {
+                id: true,
+                bio: true,
+                avatar: true,
+                userId: true,
                 user: {
-                    include: {
-                        posts: {
-                            where: { published: true },
-                            orderBy: { createdAt: 'desc' },
-                        },
+                    select: {
+                        id: true,
+                        username: true,
+                        name: true,
                     },
                 },
             },
@@ -57,8 +60,18 @@ async function updateMyProfile(req, res, next) {
                     },
                 },
             },
-            include: {
-                user: true,
+            select: {
+                id: true,
+                bio: true,
+                avatar: true,
+                userId: true,
+                user: {
+                    select: {
+                        id: true,
+                        username: true,
+                        name: true,
+                    },
+                },
             },
         });
 
@@ -89,8 +102,18 @@ async function createMyProfile(req, res, next) {
                 bio,
                 avatar,
             },
-            include: {
-                user: true,
+            select: {
+                id: true,
+                bio: true,
+                avatar: true,
+                userId: true,
+                user: {
+                    select: {
+                        id: true,
+                        username: true,
+                        name: true,
+                    },
+                },
             },
         });
 
@@ -104,13 +127,16 @@ async function otherPeopleProfile(req, res, next) {
         const { id } = req.params;
         const profile = await prisma.profile.findUnique({
             where: { userId: id },
-            include: {
+            select: {
+                id: true,
+                bio: true,
+                avatar: true,
+                userId: true,
                 user: {
-                    include: {
-                        posts: {
-                            where: { published: true },
-                            orderBy: { createdAt: 'desc' },
-                        },
+                    select: {
+                        id: true,
+                        username: true,
+                        name: true,
                     },
                 },
             },
@@ -137,15 +163,23 @@ async function profileposts(req, res, next) {
                 authorId: id,
                 published: true
             },
-            orderBy: {
-                createdAt: 'desc'
-            },
-            include: {
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                views: true,
+                category: true,
+                picture: true,
+                createdAt: true,
                 author: {
                     select: {
+                        id: true,
                         name: true
                     }
                 }
+            },
+            orderBy: {
+                createdAt: 'desc'
             }
         });
 

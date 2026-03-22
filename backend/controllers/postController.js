@@ -3,7 +3,8 @@ const prisma = require('../prismaClient');
 async function getPosts(req, res, next) {
     try {
         const posts = await prisma.post.findMany({
-            include: { author: { include: { profile: true } }, comments: true }
+            include: { author: { select: { id: true, username: true, name: true, profile: { select: { avatar: true } } } } },
+            orderBy: { createdAt: 'desc' }
         });
         res.json(posts);
     } catch (error) {
@@ -59,8 +60,8 @@ async function getMyPosts(req, res, next) {
         }
         const posts = await prisma.post.findMany({
             where: { authorId: userId },
-            include: { author: true },
-            include: {comments: true}
+            select: { id: true, title: true, content: true, views: true, category: true, picture: true, createdAt: true, updatedAt: true, author: { select: { id: true, username: true, name: true } } },
+            orderBy: { createdAt: 'desc' }
         });
         res.json(posts);
     }
@@ -182,14 +183,19 @@ async function createComment(req, res, next) {
                 authorId: userId,
 
             },
-            include: {
-                 author:{
-                    include: {
-                        profile: true,
+            select: {
+                id: true,
+                content: true,
+                createdAt: true,
+                authorId: true,
+                author: {
+                    select: {
+                        id: true,
+                        name: true,
+                        username: true,
                     },
                 },
-                 }
-            
+            },
         });
         
         if (post.authorId !== userId) {
@@ -214,10 +220,16 @@ async function getCommentsByPostId(req, res, next) {
         const { postId } = req.params;
         const comments = await prisma.comment.findMany({
             where: { postId },
-            include: {
+            select: {
+                id: true,
+                content: true,
+                createdAt: true,
+                authorId: true,
                 author: {
-                    include: {
-                        profile: true,
+                    select: {
+                        id: true,
+                        name: true,
+                        username: true,
                     },
                 },
             },
@@ -298,10 +310,16 @@ async function replyToComment(req, res, next) {
                 commentId: id,
                 authorId: userId,
             },
-            include: {
+            select: {
+                id: true,
+                content: true,
+                createdAt: true,
+                authorId: true,
                 author: {
-                    include: {
-                        profile: true,
+                    select: {
+                        id: true,
+                        name: true,
+                        username: true,
                     },
                 },
             },
@@ -316,10 +334,16 @@ async function getRepliesByCommentId(req, res, next) {
         const { id } = req.params;
         const replies = await prisma.reply.findMany({
             where: { commentId: id },
-            include: {
+            select: {
+                id: true,
+                content: true,
+                createdAt: true,
+                authorId: true,
                 author: {
-                    include: {
-                        profile: true,
+                    select: {
+                        id: true,
+                        name: true,
+                        username: true,
                     },
                 },
             },
@@ -334,14 +358,21 @@ async function getRepliesByPostId(req, res, next) {
         const { postId } = req.params;
         const comments = await prisma.comment.findMany({
             where: { postId },
+            select: { id: true },
         });
         const commentIds = comments.map(c => c.id);
         const replies = await prisma.reply.findMany({
             where: { commentId: { in: commentIds } },
-            include: {
+            select: {
+                id: true,
+                content: true,
+                createdAt: true,
+                authorId: true,
                 author: {
-                    include: {
-                        profile: true,
+                    select: {
+                        id: true,
+                        name: true,
+                        username: true,
                     },
                 },
             },
@@ -526,22 +557,31 @@ async function addView(req, res, next) {
 }
 async function getTrendingPosts(req, res, next) {
     try {
-         const twentyDaysAgo = new Date(Date.now() - 1000 * 60 * 60 * 24 * 20);
+        const twentyDaysAgo = new Date(Date.now() - 1000 * 60 * 60 * 24 * 20);
         const trendingPosts = await prisma.post.findMany({
             where: {
                 createdAt: {
                     gte: twentyDaysAgo,
                 },
             },
-            orderBy: {
-                views: 'desc',
-            },
-            include: {
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                views: true,
+                category: true,
+                picture: true,
+                createdAt: true,
                 author: {
-                    include: {
-                        profile: true,
+                    select: {
+                        id: true,
+                        name: true,
+                        username: true,
                     },
                 },
+            },
+            orderBy: {
+                views: 'desc',
             },
         });
         res.json(trendingPosts);
@@ -554,17 +594,26 @@ async function getPostsByAuthorId(req, res, next) {
         const { authorId } = req.params;
         const posts = await prisma.post.findMany({
             where: { authorId },
-            include: {
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                views: true,
+                category: true,
+                picture: true,
+                createdAt: true,
                 author: {
-                    include: {
-                        profile: true,
+                    select: {
+                        id: true,
+                        name: true,
+                        username: true,
                     },
                 },
             },
         });
         res.json(posts);
     }
-        catch (error) {
+    catch (error) {
         next(error);
     }
 }
