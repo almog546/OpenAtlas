@@ -49,7 +49,7 @@ useEffect(() => {
       }
     }
     fetchUser();
-  }, []);
+  }, [location]);
   async function onLogout() {
     try {
       await api.post('/api/auth/logout');

@@ -2,6 +2,7 @@ import styles from './Login.module.css';
 import { useState } from 'react';
 import api from '../api/axios';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
 
 export default function Login( { user }) {
@@ -10,6 +11,7 @@ export default function Login( { user }) {
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
     
 
     async function handleSubmit(e) {

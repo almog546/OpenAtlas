@@ -266,7 +266,7 @@ function handleprofilepostclick(postId) {
                 <span>{new Date(post.createdAt).toLocaleDateString()}</span>
                 <span>·</span>
                 <span>{post.views} views</span>
-                <span>·</span>
+               
                 <span className={styles.category}>{post.category}</span>
                 {user && (
                     <>

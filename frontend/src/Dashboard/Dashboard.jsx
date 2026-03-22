@@ -229,15 +229,15 @@ const userWithMostPosts = getUsers.reduce((mostPostsUser, user) => {
             
         </div>
         {toggleMenu === 'MyArticles' && 
-        <div className={styles.content}>
+        <div className={styles.contentMyArticles}>
             {content.length === 0 ? (
                 <p>No articles found. Start writing your first article!</p>
             ) : (
                 <>
                 {content.map(post => (
-                    <div key={post.id} className={styles.post} onClick={() => navigate(`/myposts/${post.id}`)}>
+                    <div key={post.id} className={styles.postMyArticles} onClick={() => navigate(`/myposts/${post.id}`)}>
                         <h3>{post.title}</h3>
-                        <div className={styles.postDetails}>
+                        <div className={styles.postDetailsMyArticles}>
                             <span>·</span>
                             <span>{new Date(post.createdAt).toLocaleDateString()}</span>
                         </div>

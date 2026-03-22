@@ -526,11 +526,11 @@ async function addView(req, res, next) {
 }
 async function getTrendingPosts(req, res, next) {
     try {
-         const fourDaysAgo = new Date(Date.now() - 1000 * 60 * 60 * 24 * 4);
+         const twentyDaysAgo = new Date(Date.now() - 1000 * 60 * 60 * 24 * 20);
         const trendingPosts = await prisma.post.findMany({
             where: {
                 createdAt: {
-                    gte: fourDaysAgo,
+                    gte: twentyDaysAgo,
                 },
             },
             orderBy: {

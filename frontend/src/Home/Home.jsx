@@ -69,7 +69,11 @@ export default function Home() {
     }
     function sortPostsTrending() {
         setPostorder('trending');
-        setPosts(trendingPosts);
+       if (trendingPosts.length > 0) {
+         setPosts(trendingPosts);
+          } else {
+          setPosts([...posts].sort((a, b) => b.views - a.views));
+          }
     }
 
 
