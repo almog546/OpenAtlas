@@ -249,15 +249,15 @@ const userWithMostPosts = getUsers.reduce((mostPostsUser, user) => {
         </div>}
 
 
-        {toggleMenu === 'Drafts' && <div className={styles.content}>
+        {toggleMenu === 'Drafts' && <div className={styles.contentDrafts}>
             {drafts.length === 0 ? (
                 <p>No drafts found. Start writing your first draft!</p>
             ) : (
                 <>
                 {drafts.map(draft => (
-                    <div key={draft.id} className={styles.post} onClick={() => navigate(`/drafts/${draft.id}`)}>
+                    <div key={draft.id} className={styles.postDrafts} onClick={() => navigate(`/drafts/${draft.id}`)}>
                         <h3>{draft.title}</h3>
-                        <div className={styles.postDetails}>
+                        <div className={styles.postDetailsDrafts}>
                             <span>·</span>
                             <span>{new Date(draft.createdAt).toLocaleDateString()}</span>
                         </div>
@@ -268,7 +268,7 @@ const userWithMostPosts = getUsers.reduce((mostPostsUser, user) => {
             )}
         </div>}
        {toggleMenu === 'Profile' && (
-    <div className={styles.content}>
+    <div className={styles.contentProfile}>
         <h1>Profile</h1>
 
         {profile ? (
@@ -276,7 +276,7 @@ const userWithMostPosts = getUsers.reduce((mostPostsUser, user) => {
                 <img
                     src={profile.avatar || `https://ui-avatars.com/api/?name=${profile.user.name}`}
                     alt="avatar"
-                    className={styles.avatar}
+                    className={styles.avatarProfile}
                 />
 
                 <h3>{profile.user.name}</h3>
@@ -292,14 +292,14 @@ const userWithMostPosts = getUsers.reduce((mostPostsUser, user) => {
             value={avatar}
             onChange={(e) => setAvatar(e.target.value)}
             placeholder="Paste avatar image URL..."
-            className={styles.input}
+            className={styles.inputProfile}
         />
 
         <textarea
             value={bio}
             onChange={(e) => setBio(e.target.value)}
             placeholder="Write your bio here..."
-            className={styles.textarea}
+            className={styles.textareaProfile}
         />
 
         {!profile ? (
@@ -310,16 +310,16 @@ const userWithMostPosts = getUsers.reduce((mostPostsUser, user) => {
     </div>
 )}
 {toggleMenu === 'SavedArticles' && (
-    <div className={styles.content}>
+    <div className={styles.contentSavedArticles}>
         <h1>Saved Articles</h1>
         {bookmarkedPosts.length === 0 ? (
-            <p className={styles.para}>No saved articles found. Start exploring and bookmark your favorite articles!</p>
+            <p className={styles.paraSavedArticles}>No saved articles found. Start exploring and bookmark your favorite articles!</p>
         ) : (
             <>
             {bookmarkedPosts.map(post => (
-                <div key={post.id} className={styles.post} onClick={() => navigate(`/posts/${post.post.id}`)}>
+                <div key={post.id} className={styles.postSavedArticles} onClick={() => navigate(`/posts/${post.post.id}`)}>
                     <h3>{post.post.title}</h3>
-                    <div className={styles.postDetails}>                     
+                    <div className={styles.postDetailsSavedArticles}>                     
                         <span>{new Date(post.createdAt).toLocaleDateString()}</span>
                     </div>
                 </div>
