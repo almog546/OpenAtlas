@@ -1,12 +1,14 @@
 import styles from './notification.module.css';
 import { useEffect, useState } from 'react';
 import api from '../api/axios';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Notification() {
    const [notifications, setNotifications] = useState([]);
    const [markedAsRead, setMarkedAsRead] = useState(false);
    const [markedOneAsRead, setMarkedOneAsRead] = useState(false);
+   const navigate = useNavigate();
    
    useEffect(() => {
     async function fetchNotifications() {
@@ -41,9 +43,9 @@ export default function Notification() {
                     {notifications.map(notification => (
                         <li key={notification.id} className={styles.notificationItem} onClick={() => {
                             if (notification.type === 'follow') {
-                                window.location.href = `/profile/${notification.actorId}`;
+                                navigate(`/profile/${notification.actorId}`);
                             } else if (notification.type === 'comment') {
-                                window.location.href = `/posts/${notification.postId}`;
+                                navigate(`/posts/${notification.postId}`);
                             }
                         }}>
                             <img src={notification.actor?.profile?.avatar}  className={styles.avatar} />
